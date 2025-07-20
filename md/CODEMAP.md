@@ -2,305 +2,349 @@
 
 ## Overview
 
-PM Tool Suite is an AI-powered toolkit for Product Managers designed to enforce scientific rigor in experimentation through hypothesis validation, pre-test checks, and documentation generation. Built with Bun + Hono + Vite + React, it aims to reduce experiment planning time from 2 hours to 8 minutes while increasing experiment success rates by 25%.
-
-**Key Business Goals:**
-- Reduce A/B test failure rate (currently 30-40% due to poor hypothesis formulation)
-- Save 2-3 sprints wasted on flawed experiments
-- Improve product decision quality through proper statistical analysis
-- Increase documentation consistency and quality by 20-30%
+PM Tool Suite is an AI-powered toolkit designed for Product Managers to enforce scientific rigor in experimentation through hypothesis validation, pre-test checks, and documentation generation. The project aims to reduce experiment planning time from 2 hours to 8 minutes while increasing experiment success rates by 25%.
 
 ## Technology Stack
 
-- **Languages**: TypeScript (100%), JavaScript
-- **Runtime**: Bun v1.x (JavaScript runtime and package manager)
-- **Frameworks**: 
-  - Backend: Hono 4.7 (lightweight web framework)
-  - Frontend: React 19 + Vite 6.3
-- **Key Libraries**:
-  - UI: Tailwind CSS v4, shadcn/ui, Magic UI components
-  - Database: Drizzle ORM 0.44, PostgreSQL
-  - Auth: Clerk (OAuth integration)
-  - Routing: React Router v7
-  - Animations: Motion, custom animation components
-- **Build Tools**: 
-  - Vite (frontend bundling)
-  - TypeScript compiler
-  - Biome (linting & formatting)
-- **Testing**: Currently no testing framework configured
+- **Languages**: TypeScript, JavaScript
+- **Runtime**: Bun (v1.1.1)
+- **Frontend**: React 19, Vite 6, Tailwind CSS v4, shadcn/ui
+- **Backend**: Hono 4.6.14 (lightweight web framework)
+- **Database**: PostgreSQL with Drizzle ORM
+- **Authentication**: Clerk
+- **Monorepo**: Bun workspaces
+- **Code Quality**: Biome (linting & formatting)
+- **Testing**: Planned (framework not yet implemented)
+- **Deployment**: Railway-ready build configuration
 
 ## Project Structure
 
 ```
 pm-tools/
-├── client/                    # React frontend application
+├── client/                 # React frontend application
 │   ├── src/
-│   │   ├── main.tsx          # Entry point
-│   │   ├── App.tsx           # Router configuration
-│   │   ├── components/       # Reusable components
-│   │   │   ├── auth/         # Authentication components
-│   │   │   ├── layout/       # Layout components
-│   │   │   ├── sections/     # Landing page sections
-│   │   │   └── ui/           # UI primitives (shadcn + custom)
-│   │   ├── pages/            # Route pages
-│   │   ├── config/           # Configuration files
-│   │   └── lib/              # Utilities
-│   ├── public/               # Static assets
-│   └── vite.config.ts        # Vite configuration
+│   │   ├── components/    # UI components
+│   │   │   ├── auth/     # Authentication components
+│   │   │   ├── dashboard/# Dashboard UI
+│   │   │   ├── layout/   # Layout components
+│   │   │   ├── settings/ # Settings management
+│   │   │   └── ui/       # shadcn/ui components
+│   │   ├── config/       # Frontend configuration
+│   │   ├── hooks/        # Custom React hooks
+│   │   ├── lib/          # Utilities and API client
+│   │   ├── pages/        # Page components
+│   │   ├── providers/    # React context providers
+│   │   ├── App.tsx       # Main app component
+│   │   └── main.tsx      # Entry point
+│   ├── public/           # Static assets
+│   └── package.json      # Frontend dependencies
 │
-├── server/                   # Hono backend API
+├── server/                # Hono backend API
 │   ├── src/
-│   │   ├── index.ts         # Main server entry & routes
-│   │   ├── config/          # Environment configuration
-│   │   ├── db/              # Database layer
-│   │   │   ├── schema/      # Drizzle ORM schemas
-│   │   │   ├── connection.ts
-│   │   │   └── migrations/
-│   │   ├── middleware/      # Express-style middleware
-│   │   └── utils/           # Utility functions
-│   ├── drizzle/             # Database migrations
-│   └── drizzle.config.ts    # Drizzle configuration
+│   │   ├── routes/       # API route handlers
+│   │   │   ├── settings.ts
+│   │   │   └── workspaces.ts
+│   │   ├── index.ts      # Main server entry
+│   │   └── db.ts         # Database connection
+│   ├── drizzle/          # Database migrations
+│   └── package.json      # Backend dependencies
 │
-├── shared/                  # Shared types & schemas
-│   └── src/
-│       ├── types/           # TypeScript interfaces
-│       ├── schemas/         # Zod validation schemas
-│       └── config/          # Shared configuration
+├── shared/                # Shared types and utilities
+│   ├── src/
+│   │   ├── types/        # TypeScript type definitions
+│   │   │   ├── api.ts
+│   │   │   ├── settings.ts
+│   │   │   └── workspaces.ts
+│   │   └── schemas/      # Zod validation schemas
+│   │       ├── database.ts
+│   │       └── env.ts
+│   └── package.json      # Shared dependencies
 │
-├── docs/                    # Documentation
-├── md/                      # Project documentation
-└── logs/                    # Application logs
+├── md/                    # Documentation
+├── scripts/              # Build and utility scripts
+├── bun.lockb            # Lock file
+├── package.json         # Root monorepo configuration
+├── tsconfig.json        # TypeScript configuration
+├── drizzle.config.ts    # Drizzle ORM configuration
+├── biome.json           # Code quality configuration
+└── CLAUDE.md            # AI assistant instructions
 ```
 
 ## Core Components
 
-### Server Components
+### Frontend (Client)
 
-#### Main API Entry (server/src/index.ts)
-- **Location**: `server/src/index.ts`
-- **Purpose**: Hono server setup with CORS, routing, and graceful shutdown
-- **Key Functions**:
-  - `app.get("/")`: Health check endpoint
-  - `app.get("/health")`: Detailed health status with DB metrics
-  - `app.get("/api/status")`: Authentication status check
-  - `app.get("/api/user/profile")`: Protected user profile endpoint
-  - `app.post("/api/hypothesis")`: Hypothesis creation (stub)
-- **Dependencies**: Hono, cors, auth middleware, database connections
-
-#### Authentication Middleware (server/src/middleware/auth.ts)
-- **Location**: `server/src/middleware/auth.ts`
-- **Purpose**: Clerk JWT token verification and user context
-- **Key Functions**:
-  - `authMiddleware()`: Enforces authentication
-  - `optionalAuthMiddleware()`: Adds user context if authenticated
-- **Auth Flow**: Bearer token → Clerk verification → User context
-
-#### Database Schema (server/src/db/schema/)
-- **Core Tables**:
-  - `users`: User accounts with workspace association
-  - `workspaces`: Multi-tenant workspace support
-  - `hypotheses`: "We Believe That" framework implementation
-  - `experiments`: A/B test tracking
-  - `hypothesisScores`: AI-powered quality scoring
-  - `documents`: PRDs and test plans
-  - `documentVersions`: Version control for documents
-- **Relationships**: Full relational integrity with cascading deletes
-
-### Client Components
-
-#### App Router (client/src/App.tsx)
+#### App Component
 - **Location**: `client/src/App.tsx`
-- **Purpose**: Route configuration with protected/public routes
-- **Routes**:
-  - `/`: Landing page (public)
-  - `/sign-in`, `/sign-up`: Authentication pages
-  - `/dashboard`: Main app (protected)
-  - `/onboarding`: New user flow (protected)
+- **Purpose**: Main application router and layout provider
+- **Key Features**:
+  - Route configuration with protected routes
+  - Authentication state management
+  - Layout persistence
 
-#### Landing Page Sections
-- **Hero**: Value proposition and CTA
-- **Metrics**: Key performance indicators
-- **Features**: Product capabilities showcase
-- **CTA**: Sign-up call-to-action
+#### API Client
+- **Location**: `client/src/lib/api.ts`
+- **Purpose**: Type-safe API client for backend communication
+- **Key Functions**:
+  - `apiClient<T>()`: Generic fetch wrapper with error handling
+  - Automatic JSON parsing and type inference
+  - Base URL configuration
 
-#### UI Component Library
-- **Base**: Button, Logo, shadcn/ui primitives
-- **Animations**: 
-  - AnimatedGradientText
-  - BorderBeam
-  - NumberTicker
-  - Particles
-  - ShimmerButton
-- **Patterns**: MagicCard, AnimatedGridPattern
+#### Dashboard Layout
+- **Location**: `client/src/components/layout/DashboardLayout.tsx`
+- **Purpose**: Main application layout with navigation
+- **Features**:
+  - Responsive sidebar navigation
+  - User profile integration
+  - Route-based active state
 
-### Shared Types & Schemas
+#### Settings Management
+- **Location**: `client/src/components/settings/`
+- **Purpose**: User preferences and configuration
+- **Components**:
+  - `SettingsDialog`: Modal for settings access
+  - `SettingsForm`: Form with tabs for different settings
+  - `GeneralSettings`: General preferences management
 
-#### Type Definitions (shared/src/types/)
-- `ApiResponse`: Legacy response format
-- `auth.ts`: Authentication types
-- `hypothesis.ts`: Hypothesis data structures
-- `experiment.ts`: Experiment configurations
-- `document.ts`: Document types
-- `utils.ts`: Utility type helpers
+### Backend (Server)
 
-#### Zod Schemas (shared/src/schemas/)
-- Runtime validation for API payloads
-- Form validation schemas
-- Database model validation
+#### Main Server
+- **Location**: `server/src/index.ts`
+- **Purpose**: Hono server setup with middleware stack
+- **Middleware Stack**:
+  1. CORS configuration
+  2. Logger middleware
+  3. Clerk authentication
+  4. Request timing
+  5. Pretty JSON responses
+  6. Compression
+- **API Routes**:
+  - `/api/settings/*` - User settings management
+  - `/api/workspaces/*` - Workspace CRUD operations
+  - `/api/health` - Database health check
+
+#### Database Connection
+- **Location**: `server/src/db.ts`
+- **Purpose**: PostgreSQL connection with pooling
+- **Features**:
+  - Connection pooling (max 10 connections)
+  - SSL configuration for production
+  - Health check endpoint
+  - Graceful shutdown handling
+
+#### Settings Routes
+- **Location**: `server/src/routes/settings.ts`
+- **Purpose**: User settings persistence
+- **Endpoints**:
+  - `GET /` - Retrieve user settings
+  - `PUT /` - Update user settings
+- **Dependencies**: Clerk auth, database connection
+
+#### Workspaces Routes
+- **Location**: `server/src/routes/workspaces.ts`
+- **Purpose**: Workspace management
+- **Endpoints**:
+  - `GET /` - List user workspaces
+  - `POST /` - Create new workspace
+  - `PUT /:id` - Update workspace
+  - `DELETE /:id` - Delete workspace
+
+### Shared Types
+
+#### Database Schema
+- **Location**: `shared/src/schemas/database.ts`
+- **Purpose**: Drizzle ORM schema definitions
+- **Tables**:
+  - `users`: User profiles with Clerk integration
+  - `settings`: User preferences (theme, language, etc.)
+  - `workspaces`: Team/project workspaces
+
+#### API Types
+- **Location**: `shared/src/types/`
+- **Purpose**: Type-safe API contracts
+- **Key Types**:
+  - `ApiResponse<T>`: Standard API response wrapper
+  - `Settings`: User settings interface
+  - `Workspace`: Workspace data structure
 
 ## Architecture Patterns
 
-### Monorepo Structure
-- **Workspace Management**: Bun workspaces with interdependencies
-- **Build Order**: shared → server → client
-- **Type Safety**: Full-stack type sharing via TypeScript paths
-- **Path Aliases**: 
-  - `@client/*` → client/src/*
-  - `@server/*` → server/src/*
-  - `@shared/*` → shared/src/*
+1. **Monorepo Architecture**
+   - Shared types ensure full-stack type safety
+   - Independent workspace builds
+   - Centralized dependency management
 
-### API Design
-- **RESTful Endpoints**: Standard HTTP verbs
-- **Authentication**: Bearer token with Clerk JWT
-- **Response Format**: Consistent JSON structure
-- **Error Handling**: HTTPException with status codes
+2. **API-First Design**
+   - RESTful endpoints with consistent structure
+   - Type-safe client-server communication
+   - Standardized error handling
 
-### Database Architecture
-- **ORM**: Drizzle with PostgreSQL
-- **Migrations**: Version-controlled SQL migrations
-- **Relationships**: Properly defined foreign keys
-- **Soft Deletes**: Not implemented (uses cascading deletes)
+3. **Component-Based UI**
+   - Atomic design with shadcn/ui
+   - Reusable component library
+   - Consistent styling with Tailwind
+
+4. **Authentication Flow**
+   - Clerk integration for user management
+   - Middleware-based auth checks
+   - User context propagation
+
+5. **Database Design**
+   - User-centric data model
+   - Foreign key relationships
+   - Optimistic locking with timestamps
 
 ## Data Flow
 
-### Authentication Flow
-```
-1. User signs in via Clerk (OAuth)
-2. Clerk provides JWT token
-3. Frontend stores token
-4. API requests include Bearer token
-5. Middleware validates with Clerk
-6. User context added to request
-7. Protected endpoints accessible
-```
+1. **User Authentication**
+   ```
+   Client → Clerk → Server Middleware → Database → Response
+   ```
 
-### Hypothesis Creation Flow
-```
-1. User fills hypothesis form
-2. Frontend validates with Zod schema
-3. POST to /api/hypothesis with auth
-4. Server validates and enriches data
-5. AI scoring service called
-6. Database transaction:
-   - Create hypothesis record
-   - Create initial score record
-7. Return enriched hypothesis to client
-```
+2. **Settings Management**
+   ```
+   UI Form → API Client → Server Route → Database → UI Update
+   ```
+
+3. **Workspace Operations**
+   ```
+   Dashboard → API Request → Auth Check → CRUD Operation → State Update
+   ```
 
 ## Entry Points
 
-- **Main Server**: `server/src/index.ts` (Bun runtime)
-- **Client Dev**: `client/src/main.tsx` (Vite dev server)
-- **Database Migrations**: `server/src/db/migrate.ts`
-- **Database Seed**: `server/src/db/seed.ts`
+- **Frontend**: `client/src/main.tsx`
+  - Initializes React app with providers
+  - Sets up routing and Clerk authentication
+  
+- **Backend**: `server/src/index.ts`
+  - Starts Hono server on port 3000
+  - Configures middleware pipeline
+  - Mounts API routes
+
+- **Database**: Auto-connects on server start
+  - Connection string from environment
+  - Health check available at `/api/health`
 
 ## External Dependencies
 
-### Authentication (Clerk)
-- OAuth providers configuration
-- JWT token management
-- User profile synchronization
+### Frontend Dependencies
+- **UI Framework**: React 19 with concurrent features
+- **Styling**: Tailwind CSS v4 with Vite plugin
+- **Components**: shadcn/ui (Radix UI based)
+- **Forms**: React Hook Form with Zod validation
+- **Icons**: Lucide React
+- **Date Handling**: date-fns
+- **Authentication**: @clerk/clerk-react
 
-### AI Services (Planned)
-- OpenAI API: Content generation
-- Anthropic API: Analysis and scoring
-- Google AI: Alternative LLM support
+### Backend Dependencies
+- **Web Framework**: Hono (lightweight, fast)
+- **Database**: PostgreSQL with @neondatabase/serverless
+- **ORM**: Drizzle ORM
+- **Validation**: Zod schemas
+- **Authentication**: @clerk/backend
+- **Environment**: dotenv for config
 
-### Infrastructure
-- PostgreSQL: Primary data store
-- Redis: Caching layer (configured but not implemented)
-- Railway: Deployment platform
+### Development Dependencies
+- **Build Tool**: Vite for frontend
+- **Type Checking**: TypeScript strict mode
+- **Code Quality**: Biome for linting/formatting
+- **Database Tooling**: drizzle-kit for migrations
 
 ## Testing Strategy
 
-**Current State**: No testing framework configured
-
-**Recommended Approach**:
-- Unit tests: Vitest for both client and server
-- Integration tests: Supertest for API endpoints
-- E2E tests: Playwright for critical user flows
-- Database tests: Isolated test database
+Currently, no testing framework is implemented. Planned testing approach includes:
+- Unit tests for utility functions
+- Integration tests for API endpoints
+- Component testing for UI elements
+- E2E tests for critical user flows
 
 ## Development Notes
 
 ### Setup Instructions
-```bash
-# Install dependencies
-bun install
-
-# Environment setup
-cp .env.example .env
-# Configure: DATABASE_URL, CLERK keys, AI keys
-
-# Database setup
-bun run db:migrate
-bun run db:seed
-
-# Development
-bun run dev
-```
+1. Install Bun runtime
+2. Run `bun install` to install dependencies
+3. Set up PostgreSQL database
+4. Configure environment variables (see `.env.example`)
+5. Run `bun run dev` to start all services
 
 ### Common Tasks
-- **Add new API endpoint**: Update server/src/index.ts
-- **Add database table**: Create schema in server/src/db/schema/
-- **Add UI component**: Use shadcn/ui CLI or create in client/src/components/ui/
-- **Type updates**: Modify shared/src/types/ for full-stack safety
+- **Start Development**: `bun run dev`
+- **Build for Production**: `bun run build`
+- **Run Linting**: `cd client && bun run lint`
+- **Database Migrations**: `bun run db:generate && bun run db:migrate`
+- **Deploy to Railway**: `bun run railway-build`
 
-### Code Quality
-- **Formatting**: `bun run format` (Biome)
-- **Linting**: `bun run lint` (Biome)
-- **Type Check**: `bun run build` (TypeScript)
+### Environment Variables
+Required environment variables:
+- `DATABASE_URL`: PostgreSQL connection string
+- `CLERK_PUBLISHABLE_KEY`: Clerk frontend key
+- `CLERK_SECRET_KEY`: Clerk backend key
+- `VITE_API_URL`: Backend API URL (defaults to http://localhost:3000)
 
 ### Gotchas
-- Bun workspace dependencies use `workspace:*` syntax
-- Tailwind CSS v4 uses Vite plugin (not PostCSS)
-- Clerk tokens must be passed as Bearer tokens
-- Database migrations must be run in order
-- Hot reload works across all workspaces
+- Ensure Bun version 1.1.1+ for workspace support
+- Database SSL is required in production
+- CORS must be configured for frontend-backend communication
+- Build order matters: shared → server → client
 
 ## Areas for Improvement
 
 ### Technical Debt
-1. **No Testing Infrastructure**: Critical for PM tool reliability
-2. **Incomplete API Implementation**: Most endpoints are stubs
-3. **Missing Error Boundaries**: Frontend error handling needed
-4. **No API Documentation**: OpenAPI/Swagger spec would help
-5. **Limited Logging**: Only basic console logging present
+1. **Testing Infrastructure**: No tests implemented yet
+2. **Error Handling**: Need comprehensive error boundaries
+3. **Logging**: Production-ready logging system needed
+4. **API Documentation**: OpenAPI/Swagger specs missing
+5. **Type Safety**: Some `any` types in API client
 
-### Missing Features (from PRD)
-1. **Hypothesis Builder**: Core feature not implemented
-2. **Pre-Test Validator**: No validation engine
-3. **Post-Test Analyzer**: Statistical analysis missing
-4. **Document Generator**: AI integration pending
-5. **Real-time Collaboration**: WebSocket support needed
+### Missing Features
+1. **Core PM Tools**: 
+   - Hypothesis Builder
+   - Pre-Test Validator
+   - Sample Size Calculator
+   - Timeline Predictor
+   - Documentation Generator
+
+2. **Infrastructure**:
+   - Redis caching layer
+   - WebSocket support for real-time features
+   - File upload handling
+   - Email notifications
+
+3. **User Experience**:
+   - Onboarding flow
+   - Team collaboration features
+   - Export functionality
+   - Mobile responsiveness improvements
+
+### Documentation Gaps
+1. API endpoint documentation
+2. Component storybook
+3. Deployment guide
+4. Contributing guidelines
+5. Security best practices
 
 ### Performance Optimizations
-1. **Database Indexing**: Only basic indexes defined
-2. **Query Optimization**: N+1 queries possible
-3. **Caching Layer**: Redis configured but unused
-4. **Bundle Splitting**: Frontend could be optimized
-5. **Image Optimization**: No lazy loading implemented
+1. Implement React.lazy for code splitting
+2. Add service worker for offline support
+3. Optimize bundle size with tree shaking
+4. Implement database query optimization
+5. Add response caching strategies
 
-### Security Enhancements
-1. **Rate Limiting**: Not implemented
-2. **Input Sanitization**: Basic Zod validation only
-3. **CORS Configuration**: Currently permissive
-4. **API Versioning**: No version strategy
-5. **Audit Logging**: No user action tracking
+## Future Architecture Considerations
 
-### Developer Experience
-1. **API Client Generation**: Could auto-generate from types
-2. **Storybook**: Component documentation missing
-3. **Developer Portal**: No API playground
-4. **Monitoring**: No APM or error tracking
-5. **CI/CD Pipeline**: No automated testing/deployment
+1. **Microservices**: Consider splitting AI features into separate services
+2. **Event-Driven**: Implement event sourcing for audit trails
+3. **Multi-Tenancy**: Design for enterprise team isolation
+4. **API Gateway**: Add rate limiting and API key management
+5. **Observability**: Integrate OpenTelemetry for monitoring
+
+## Security Considerations
+
+1. **Authentication**: Clerk handles auth, but need authorization rules
+2. **Data Privacy**: Implement data encryption at rest
+3. **API Security**: Add rate limiting and request validation
+4. **Secrets Management**: Move to proper secret management service
+5. **Audit Logging**: Track all data modifications
+
+This code map provides a comprehensive overview of the PM Tool Suite architecture, making it easier for LLMs and developers to understand and work with the codebase effectively.
