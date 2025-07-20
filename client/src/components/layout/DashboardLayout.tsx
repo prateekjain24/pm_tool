@@ -8,10 +8,13 @@ import {
   Menu,
   X,
   Home,
-  ChevronRight
+  ChevronRight,
+  Users,
+  Shield
 } from "lucide-react";
 import { Header } from "./Header";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/hooks/useUser";
 
 interface DashboardLayoutProps {
   children?: ReactNode;
@@ -22,6 +25,8 @@ interface NavItem {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   description?: string;
+  requiredRole?: "admin" | "member" | "viewer";
+  requiredPermission?: string;
 }
 
 const navItems: NavItem[] = [
@@ -50,6 +55,20 @@ const navItems: NavItem[] = [
     description: "PRDs and test plans",
   },
   {
+    title: "Team",
+    href: "/team",
+    icon: Users,
+    description: "Manage team members",
+    requiredPermission: "manage_team",
+  },
+  {
+    title: "Admin",
+    href: "/admin",
+    icon: Shield,
+    description: "Admin controls",
+    requiredRole: "admin",
+  },
+  {
     title: "Settings",
     href: "/settings",
     icon: Settings,
@@ -60,8 +79,20 @@ const navItems: NavItem[] = [
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user, hasRole, hasPermission } = useUser();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  // Filter navigation items based on user role and permissions
+  const filteredNavItems = navItems.filter(item => {
+    if (item.requiredRole && !hasRole(item.requiredRole)) {
+      return false;
+    }
+    if (item.requiredPermission && !hasPermission(item.requiredPermission)) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <div className="flex h-screen bg-background">
@@ -96,7 +127,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 space-y-1 p-4">
-            {navItems.map((item) => {
+            {filteredNavItems.map((item) => {
               const isActive = location.pathname === item.href || 
                 (item.href !== "/dashboard" && location.pathname.startsWith(item.href));
               
@@ -131,6 +162,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="px-3 py-2 text-xs text-muted-foreground">
               <div>PM Tools v1.0.0</div>
               <div className="mt-1">© 2025 PM Tools</div>
+              {user && (
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                    {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

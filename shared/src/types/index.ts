@@ -12,3 +12,4 @@ export * from "./document";
 export * from "./api";
 export * from "./utils";
 export * from "./workspace";
+export * from "./settings";

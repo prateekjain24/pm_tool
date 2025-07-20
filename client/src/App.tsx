@@ -9,6 +9,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Onboarding } from "./pages/Onboarding";
 import { LogoDemo } from "./pages/LogoDemo";
 import { Profile } from "./pages/Profile";
+import { Settings } from "./pages/Settings";
 
 function App() {
   return (
@@ -53,7 +54,7 @@ function App() {
           <Route path="/hypotheses" element={<div className="p-6"><h1 className="text-2xl font-bold">Hypotheses</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
           <Route path="/experiments" element={<div className="p-6"><h1 className="text-2xl font-bold">Experiments</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
           <Route path="/documents" element={<div className="p-6"><h1 className="text-2xl font-bold">Documents</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
-          <Route path="/settings" element={<div className="p-6"><h1 className="text-2xl font-bold">Settings</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         {/* Catch all redirect */}

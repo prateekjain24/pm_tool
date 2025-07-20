@@ -1,0 +1,951 @@
+$ bunx concurrently "bun run dev:shared" "bun run dev:server" "bun run dev:client"
+[0] $ cd shared && bun run dev
+[1] $ cd server && bun run dev
+[2] $ cd client && bun run dev
+[0] $ tsc --watch
+[2] $ vite
+[1] $ bun --watch run src/index.ts
+[0] [2J[3J[H1:12:41 PM - Starting compilation in watch mode...
+[0] 
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  override existing env vars with { override: true })
+[1] [36m[2025-07-20T05:12:42.026Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:12:42.027Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[2] Port 5173 is in use, trying another one...
+[2] 
+[2]   VITE v6.3.5  ready in 198 ms
+[2] 
+[2]   ➜  Local:   http://localhost:5174/
+[2]   ➜  Network: http://192.168.68.63:5174/
+[0] 
+[0] 1:12:42 PM - Found 0 errors. Watching for file changes.
+[1] [36m[2025-07-20T05:13:13.371Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988393371_2vteg7y",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] Auth middleware error: 30 | }
+[1] 31 | function parsePublishableKey(key, options = {}) {
+[1] 32 |   key = key || "";
+[1] 33 |   if (!key || !isPublishableKey(key)) {
+[1] 34 |     if (options.fatal && !key) {
+[1] 35 |       throw new Error(
+[1]                  ^
+[1] error: Publishable key is missing. Ensure that your publishable key is correctly configured. Double-check your environment configuration for your keys, or access them here: https://dashboard.clerk.com/last-active?path=api-keys
+[1]       at parsePublishableKey (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/shared/dist/chunk-IV7BOO4U.mjs:35:13)
+[1]       at assertValidPublishableKey (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:203:3)
+[1]       at initPublishableKeyValues (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:287:5)
+[1]       at new AuthenticateContext (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:216:10)
+[1]       at <anonymous> (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:381:10)
+[1]       at createAuthenticateContext (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:379:40)
+[1]       at <anonymous> (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:4455:37)
+[1]       at authenticateRequest (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/@clerk/backend/dist/chunk-HJEYNBQX.mjs:4454:34)
+[1]       at authMiddleware (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/server/src/middleware/auth.ts:46:38)
+[1]       at authMiddleware (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/server/src/middleware/auth.ts:23:38)
+[1] 
+[1] [36m[2025-07-20T05:13:13.373Z] [INFO] [http][0m GET /api/workspaces 401 2ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988393371_2vteg7y",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 401,
+[1]   "duration": 2
+[1] }
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit)
+[1] [36m[2025-07-20T05:14:17.816Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:14:17.817Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' })
+[1] [36m[2025-07-20T05:14:26.612Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:14:26.612Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[0] [2J[3J[H1:14:26 PM - File change detected. Starting incremental compilation...
+[0] 
+[0] 
+[0] 1:14:26 PM - Found 0 errors. Watching for file changes.
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild)
+[1] [36m[2025-07-20T05:14:37.945Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:14:37.946Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:14:45.679Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988485679_cx92owj",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:14:47.127Z] [INFO] [app][0m Fetching workspaces for user
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [33m[2025-07-20T05:14:47.128Z] [WARN] [http][0m Slow request detected: GET /api/workspaces took 1449ms
+[1] {
+[1]   "requestId": "req_1752988485679_cx92owj",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "duration": 1449
+[1] }
+[1] [36m[2025-07-20T05:14:47.129Z] [INFO] [http][0m GET /api/workspaces 200 1450ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988485679_cx92owj",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 200,
+[1]   "duration": 1450,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] 13 |     const accepted = ctx.req.header("Accept-Encoding");
+[1] 14 |     const encoding = options?.encoding ?? ENCODING_TYPES.find((encoding2) => accepted?.includes(encoding2));
+[1] 15 |     if (!encoding || !ctx.res.body) {
+[1] 16 |       return;
+[1] 17 |     }
+[1] 18 |     const stream = new CompressionStream(encoding);
+[1]                             ^
+[1] ReferenceError: CompressionStream is not defined
+[1]       at compress2 (/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/node_modules/hono/dist/middleware/compress/index.js:18:24)
+[1] 
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit)
+[1] [36m[2025-07-20T05:15:22.037Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:15:22.037Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  write to custom object with { processEnv: myObject })
+[1] [36m[2025-07-20T05:15:31.327Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:15:31.328Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:16:15.323Z] [INFO] [http][0m PUT /api/user/settings/general
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988575323_9m6f4dn",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "content-length": "198",
+[1]     "content-type": "application/json",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:16:15.960Z] [INFO] [app][0m Updating general settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:16:15.960Z] [INFO] [http][0m PUT /api/user/settings/general 404 637ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988575323_9m6f4dn",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "status": 404,
+[1]   "duration": 637,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: 🔐 encrypt with dotenvx: https://dotenvx.com)
+[1] [36m[2025-07-20T05:16:56.637Z] [INFO] [sentry][0m Sentry not initialized (development mode or missin[0] error: script "dev:shared" was terminated by signal SIGTERM (Polite quit request)
+[2] error: script "dev:client" was terminated by signal SIGTERM (Polite quit request)
+[0] error: script "dev" was terminated by signal SIGTERM (Polite quit request)
+[2] error: script "dev" exited with code 143
+[2] bun run dev:client exited with code SIGTERM
+[0] bun run dev:shared exited with code SIGTERM
+error: script "dev" exited with code 1
+ed (development mode or missing DSN)
+[1] [36m[2025-07-20T05:17:07.746Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`)
+[1] [36m[2025-07-20T05:17:19.238Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:17:19.239Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:17:24.085Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988644084_21sawsk",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:17:24.951Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:17:24.955Z] [INFO] [http][0m GET /api/user/settings 200 871ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988644084_21sawsk",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 871,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] 1 | (function (stream) {"use strict";
+[1]               ^
+[1] TypeError: ReadableStream is locked
+[1] [36m[2025-07-20T05:17:24.957Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988644957_708zzz8",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:17:25.221Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:17:25.222Z] [INFO] [http][0m GET /api/user/settings 200 265ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988644957_708zzz8",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 265,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] 1 | (function (stream) {"use strict";
+[1]               ^
+[1] TypeError: ReadableStream is locked
+[1] [36m[2025-07-20T05:17:31.096Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988651096_sw10je0",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:17:31.390Z] [INFO] [app][0m Fetching workspaces for user
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:17:31.390Z] [INFO] [http][0m GET /api/workspaces 200 294ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988651096_sw10je0",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 200,
+[1]   "duration": 294,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] 1 | (function (stream) {"use strict";
+[1]               ^
+[1] TypeError: ReadableStream is locked
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' })
+[1] [36m[2025-07-20T05:17:31.814Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:17:31.815Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:18:35.540Z] [INFO] [http][0m PUT /api/user/settings/general
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988715540_ddz8dnb",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "content-length": "198",
+[1]     "content-type": "application/json",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:18:36.279Z] [INFO] [app][0m Updating general settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:18:36.281Z] [INFO] [http][0m PUT /api/user/settings/general 200 741ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988715540_ddz8dnb",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "status": 200,
+[1]   "duration": 741,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] 1 | (function (stream) {"use strict";
+[1]               ^
+[1] TypeError: ReadableStream is locked
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  enable debug logging with { debug: true })
+[1] [36m[2025-07-20T05:19:04.355Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:19:04.356Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  write to custom object with { processEnv: myObject })
+[1] [36m[2025-07-20T05:19:14.424Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:19:14.425Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:19:22.004Z] [INFO] [http][0m PUT /api/user/settings/general
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988762004_vqihzks",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "content-length": "198",
+[1]     "content-type": "application/json",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:19:22.473Z] [INFO] [app][0m Updating general settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:19:22.474Z] [INFO] [http][0m PUT /api/user/settings/general 200 470ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988762004_vqihzks",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "status": 200,
+[1]   "duration": 470,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:19:48.299Z] [INFO] [http][0m PUT /api/user/settings/general
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988788299_mwa774w",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "content-length": "198",
+[1]     "content-type": "application/json",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:19:48.955Z] [INFO] [app][0m Updating general settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:19:48.955Z] [INFO] [http][0m PUT /api/user/settings/general 200 656ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988788299_mwa774w",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "status": 200,
+[1]   "duration": 656,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:20:05.978Z] [INFO] [http][0m PUT /api/user/settings/general
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988805977_m3ijzkx",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "content-length": "198",
+[1]     "content-type": "application/json",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:20:06.402Z] [INFO] [app][0m Updating general settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:20:06.403Z] [INFO] [http][0m PUT /api/user/settings/general 200 426ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988805977_m3ijzkx",
+[1]   "method": "PUT",
+[1]   "path": "/api/user/settings/general",
+[1]   "status": 200,
+[1]   "duration": 426,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:20:13.396Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988813396_zywu8mm",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:20:13.777Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:20:13.778Z] [INFO] [http][0m GET /api/user/settings 200 382ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988813396_zywu8mm",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 382,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:20:13.781Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988813781_62piyg6",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:20:14.078Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:20:14.079Z] [INFO] [http][0m GET /api/user/settings 200 297ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988813781_62piyg6",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 297,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:20:16.439Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988816439_xc8rwjm",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:20:16.740Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:20:16.740Z] [INFO] [http][0m GET /api/user/settings 200 301ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988816439_xc8rwjm",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 301,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:20:16.742Z] [INFO] [http][0m GET /api/user/settings
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988816742_t6mf4bk",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:20:17.047Z] [INFO] [app][0m Fetching user settings
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:20:17.048Z] [INFO] [http][0m GET /api/user/settings 200 306ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988816742_t6mf4bk",
+[1]   "method": "GET",
+[1]   "path": "/api/user/settings",
+[1]   "status": 200,
+[1]   "duration": 306,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:21:44.635Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752988904635_zoyf16b",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "dnt": "1",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:21:45.229Z] [INFO] [app][0m Fetching workspaces for user
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:21:45.231Z] [INFO] [http][0m GET /api/workspaces 200 596ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752988904635_zoyf16b",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 200,
+[1]   "duration": 596,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' })
+[1] [36m[2025-07-20T05:25:00.154Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:25:00.154Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  suppress all logs with { quiet: true })
+[1] [36m[2025-07-20T05:25:08.932Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:25:08.932Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' })
+[1] [36m[2025-07-20T05:25:14.705Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:25:14.705Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  override existing env vars with { override: true })
+[1] [36m[2025-07-20T05:25:23.643Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:25:23.644Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[1] [36m[2025-07-20T05:26:24.629Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752989184629_i9j6v9n",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "dnt": "1",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:26:24.648Z] [INFO] [http][0m GET /api/workspaces
+[1] {
+[1]   "type": "request",
+[1]   "requestId": "req_1752989184648_d2a8wui",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "query": {},
+[1]   "headers": {
+[1]     "accept": "*/*",
+[1]     "accept-encoding": "gzip, deflate, br, zstd",
+[1]     "accept-language": "en-US,en;q=0.9",
+[1]     "authorization": "[REDACTED]",
+[1]     "connection": "keep-alive",
+[1]     "host": "localhost:3000",
+[1]     "origin": "http://localhost:5173",
+[1]     "referer": "http://localhost:5173/",
+[1]     "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+[1]     "sec-ch-ua-mobile": "?0",
+[1]     "sec-ch-ua-platform": "\"macOS\"",
+[1]     "sec-fetch-dest": "empty",
+[1]     "sec-fetch-mode": "cors",
+[1]     "sec-fetch-site": "same-site",
+[1]     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1]   },
+[1]   "ip": "unknown",
+[1]   "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+[1] }
+[1] [36m[2025-07-20T05:26:25.493Z] [INFO] [app][0m Fetching workspaces for user
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:26:25.494Z] [INFO] [http][0m GET /api/workspaces 200 865ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752989184629_i9j6v9n",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 200,
+[1]   "duration": 865,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [36m[2025-07-20T05:26:25.615Z] [INFO] [app][0m Fetching workspaces for user
+[1] {
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO"
+[1] }
+[1] [36m[2025-07-20T05:26:25.615Z] [INFO] [http][0m GET /api/workspaces 200 967ms
+[1] {
+[1]   "type": "response",
+[1]   "requestId": "req_1752989184648_d2a8wui",
+[1]   "method": "GET",
+[1]   "path": "/api/workspaces",
+[1]   "status": 200,
+[1]   "duration": 967,
+[1]   "userId": "user_3040sQZLdeq1Krtj2HvMyeYMUwO",
+[1]   "userEmail": "prateek.jn06@gmail.com"
+[1] }
+[1] [dotenv@17.2.0] injecting env (5) from ../.env (tip: ⚙️  suppress all logs with { quiet: true })
+[1] [36m[2025-07-20T05:28:35.514Z] [INFO] [sentry][0m Sentry not initialized (development mode or missing DSN)
+[1] [36m[2025-07-20T05:28:35.514Z] [INFO] [app][0m PM Tools API starting...
+[1] {
+[1]   "port": 3000,
+[1]   "environment": "development",
+[1]   "clientUrl": "http://localhost:5173"
+[1] }
+[1] Started development server: http://localhost:3000
+[2] error: script "dev:client" was terminated by signal SIGTERM (Polite quit request)
+[2] error: script "dev" exited with code 143
+[1] [36m[2025-07-20T05:29:05.512Z] [INFO] [app][0m Received shutdown signal, closing connections...
+[1] [36m[2025-07-20T05:29:05.512Z] [INFO] [app][0m All connections closed successfully
+[1] error: script "dev:server" was terminated by signal SIGTERM (Polite quit request)
+[0] error: script "dev:shared" was terminated by signal SIGTERM (Polite quit request)
+[1] bun run dev:server exited with code SIGTERM
+[2] bun run dev:client exited with code SIGTERM
+[0] error: script "dev" was terminated by signal SIGTERM (Polite quit request)
+[0] bun run dev:shared exited with code SIGTERM
+error: script "dev" exited with code 1

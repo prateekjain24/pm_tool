@@ -120,7 +120,7 @@ export const documentFilterSchema = z.object({
  */
 export const documentExportResultSchema = z.object({
   format: z.string(),
-  content: z.union([z.string(), z.instanceof(Buffer)]),
+  content: z.string(),
   filename: z.string(),
   mimeType: z.string(),
 });

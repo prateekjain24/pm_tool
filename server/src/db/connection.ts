@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool, type PoolClient, type PoolConfig } from "pg";
 import { env } from "../config/env";
+import * as schema from "./schema";
 
 // Database connection configuration
 const poolConfig: PoolConfig = {
@@ -171,7 +172,8 @@ class DatabaseConnection {
    */
   getDrizzle() {
     const pool = this.getPool();
-    return drizzle(pool);
+    const drizzleInstance = drizzle(pool, { schema });
+    return drizzleInstance;
   }
 
   /**

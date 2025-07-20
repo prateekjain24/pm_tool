@@ -72,7 +72,7 @@ export interface DocumentWithVersions extends Document {
 
 export interface DocumentExportResult {
   format: string;
-  content: string | Buffer;
+  content: string;
   filename: string;
   mimeType: string;
 }

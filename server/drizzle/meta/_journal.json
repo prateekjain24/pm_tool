@@ -15,6 +15,20 @@
       "when": 1752936237293,
       "tag": "0001_cheerful_phantom_reporter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752989139160,
+      "tag": "0002_mighty_richard_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752990526368,
+      "tag": "0003_far_silver_surfer",
+      "breakpoints": true
     }
   ]
 }

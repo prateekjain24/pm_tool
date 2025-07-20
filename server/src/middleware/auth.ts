@@ -45,6 +45,7 @@ export async function authMiddleware(c: Context, next: Next) {
     // Authenticate the request with Clerk
     const requestState = await clerk.authenticateRequest(mockRequest, {
       secretKey: env.CLERK_SECRET_KEY,
+      publishableKey: env.CLERK_PUBLISHABLE_KEY,
     });
 
     if (!requestState.isSignedIn) {

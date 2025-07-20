@@ -5,3 +5,4 @@ export * from "./hypothesis";
 export * from "./experiment";
 export * from "./document";
 export * from "./workspace";
+export * from "./settings";

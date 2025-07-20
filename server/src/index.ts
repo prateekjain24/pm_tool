@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { compress } from "hono/compress";
+// import { compress } from "hono/compress"; // Disabled for Bun compatibility
 import { secureHeaders } from "hono/secure-headers";
 import { timing } from "hono/timing";
 import { z } from "zod";
@@ -8,7 +8,7 @@ import { z } from "zod";
 // Import middleware
 import { errorHandler } from "./middleware/errorHandler";
 import { loggingMiddleware, performanceMiddleware } from "./middleware/logger";
-import { responseFormatter } from "./middleware/responseFormatter";
+// import { responseFormatter } from "./middleware/responseFormatter"; // Disabled due to stream locking issue
 import { authMiddleware, optionalAuthMiddleware } from "./middleware/auth";
 import { validateBody, validateQuery, getValidated } from "./middleware/validation";
 
@@ -19,10 +19,11 @@ import { logger } from "./utils/logger";
 
 // Import routes
 import { workspaceRouter } from "./routes/workspaces";
+import { settingsRouter } from "./routes/settings";
 
 // Import config and database
 import { env } from "./config/env";
-import { dbHealthCheck, getDbMetrics } from "./db";
+import { connectDb, dbHealthCheck, getDbMetrics } from "./db";
 import { initSentry } from "./config/sentry";
 import { initializeFileLogging, closeFileLogger } from "./utils/logRotation";
 
@@ -31,6 +32,13 @@ initSentry();
 
 // Initialize file logging for production
 initializeFileLogging();
+
+// Initialize database connection
+connectDb().catch((error) => {
+  logger.error(error, "Failed to connect to database");
+  // Don't exit - allow the server to start even if DB is down
+  // Health checks will report the issue
+});
 
 const app = new Hono();
 
@@ -52,8 +60,8 @@ app.use(
   }),
 );
 
-// 3. Compression
-app.use(compress());
+// 3. Compression - disabled for Bun compatibility
+// app.use(compress());
 
 // 4. Request timing
 app.use(timing());
@@ -65,8 +73,8 @@ app.use(performanceMiddleware);
 // 6. Error handler (wraps all routes)
 app.use(errorHandler);
 
-// 7. Response formatter (for successful responses)
-app.use(responseFormatter);
+// 7. Response formatter (for successful responses) - disabled due to stream locking issue
+// app.use(responseFormatter);
 
 /**
  * Public routes
@@ -117,6 +125,9 @@ app.get("/hello", async (c) => {
 
 // Mount workspace routes
 app.route("/api/workspaces", workspaceRouter);
+
+// Mount settings routes
+app.route("/api/user/settings", settingsRouter);
 
 // Status endpoint - works with or without authentication
 app.get("/api/status", optionalAuthMiddleware, async (c) => {

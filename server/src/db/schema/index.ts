@@ -6,6 +6,7 @@ import { experiments } from "./experiments";
 import { hypothesisScores } from "./hypothesisScores";
 import { documents } from "./documents";
 import { documentVersions } from "./documentVersions";
+import { userSettings } from "./userSettings";
 
 // Define relations between tables
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -17,6 +18,10 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   scores: many(hypothesisScores),
   documents: many(documents),
   documentVersions: many(documentVersions),
+  settings: one(userSettings, {
+    fields: [users.id],
+    references: [userSettings.userId],
+  }),
 }));
 
 export const workspacesRelations = relations(workspaces, ({ many }) => ({
@@ -93,6 +98,13 @@ export const documentVersionsRelations = relations(documentVersions, ({ one }) =
   }),
 }));
 
+export const userSettingsRelations = relations(userSettings, ({ one }) => ({
+  user: one(users, {
+    fields: [userSettings.userId],
+    references: [users.id],
+  }),
+}));
+
 // Export all schemas
 export * from "./users";
 export * from "./workspaces";
@@ -101,6 +113,7 @@ export * from "./experiments";
 export * from "./hypothesisScores";
 export * from "./documents";
 export * from "./documentVersions";
+export * from "./userSettings";
 
 // Export for migrations
 export const schema = {
@@ -111,4 +124,5 @@ export const schema = {
   hypothesisScores,
   documents,
   documentVersions,
+  userSettings,
 };

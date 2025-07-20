@@ -10,6 +10,23 @@ This document covers tickets 1-65, focusing on:
 
 ## Recent Updates (2025-07-20)
 
+### Completed User Settings & Navigation Tickets (28-30)
+- ✅ TICKET-028: Navigation component with auth state
+  - Updated DashboardLayout with role-based navigation filtering
+  - Created useUser hook for role and permission management
+  - Added admin-only navigation items (Team, Admin)
+  - Display user role badge in sidebar
+- ✅ TICKET-029: User settings page implementation
+  - Built complete Settings page with 4 tabs
+  - Created UI components (Input, Label, Switch, Select)
+  - Implemented all settings components with form validation
+  - Added settings types and schemas to shared package
+  - Integrated with Clerk for profile updates
+- ✅ TICKET-030: API middleware auth validation
+  - Auth middleware already fully implemented
+  - Created complete settings API with all CRUD operations
+  - Protected routes with proper JWT validation
+
 ### Completed Workspace & Dashboard Layout Tickets (25-26)
 - ✅ TICKET-025: Implement workspace/organization support
   - Created workspace types and schemas in shared package
@@ -732,44 +749,64 @@ export interface Document {
 - ✅ Updated ProtectedRoute to use Navigate component
 - ✅ Added catch-all redirect to home page
 
-### TICKET-028: Create navigation component with auth state
+### TICKET-028: Create navigation component with auth state ✅ COMPLETED
 **Acceptance Criteria:**
-- Build dynamic navigation
-- Show/hide based on auth
-- Add active states
-- Include mobile menu
+- ✅ Build dynamic navigation
+- ✅ Show/hide based on auth  
+- ✅ Add active states
+- ✅ Include mobile menu
 **Technical Details:**
-- Use Clerk hooks
-- Add role-based items
-- Implement responsive design
+- ✅ Use Clerk hooks
+- ✅ Add role-based items
+- ✅ Implement responsive design
+**Implementation:**
+- ✅ Updated DashboardLayout with role-based navigation filtering
+- ✅ Added useUser hook for accessing user roles and permissions
+- ✅ Added admin and team management navigation items
+- ✅ Display user role badge in sidebar
 
-### TICKET-029: Implement user settings page
+### TICKET-029: Implement user settings page ✅ COMPLETED
 **Acceptance Criteria:**
-- Create settings layout
-- Add notification preferences
-- Include API key management
-- Add theme selection
+- ✅ Create settings layout
+- ✅ Add notification preferences
+- ✅ Include API key management
+- ✅ Add theme selection
 **Technical Details:**
-- Create tabbed interface
-- Add form validation
-- Implement auto-save
+- ✅ Create tabbed interface
+- ✅ Add form validation
+- ✅ Implement auto-save
+**Implementation:**
+- ✅ Created Settings page with 4 tabs (General, Notifications, API Keys, Appearance)
+- ✅ Built UI components: Input, Label, Switch, Select
+- ✅ Created individual settings components:
+  - GeneralSettings: Name and email management
+  - NotificationSettings: Email and in-app preferences
+  - ApiKeySettings: Create, view, and delete API keys
+  - AppearanceSettings: Theme selection (light/dark/system)
+- ✅ Added settings types and validation schemas in shared package
+- ✅ Integrated with Clerk for user profile updates
 
-### TICKET-030: Create API middleware for auth validation
+### TICKET-030: Create API middleware for auth validation ✅ COMPLETED
 **Acceptance Criteria:**
-- Verify Clerk JWT tokens
-- Extract user context
-- Add to request object
-- Handle errors
+- ✅ Verify Clerk JWT tokens
+- ✅ Extract user context
+- ✅ Add to request object
+- ✅ Handle errors
 **Technical Details:**
-```typescript
-// server/src/middleware/auth.ts
-export async function authMiddleware(c: Context, next: Next) {
-  const token = c.req.header('Authorization')?.replace('Bearer ', '');
-  const user = await verifyToken(token);
-  c.set('user', user);
-  await next();
-}
-```
+- ✅ Implemented authMiddleware and optionalAuthMiddleware
+- ✅ Uses Clerk's authenticateRequest method
+- ✅ Proper error handling with HTTPException
+**Implementation:**
+- ✅ Already fully implemented in server/src/middleware/auth.ts
+- ✅ Added auth utility functions (getUser, requireUser, isAuthenticated)
+- ✅ Created API endpoints for user settings with auth protection
+- ✅ Settings router with full CRUD operations:
+  - GET /api/user/settings - Get user settings
+  - PUT /api/user/settings/general - Update general settings
+  - PUT /api/user/settings/notifications - Update notifications
+  - POST /api/user/settings/api-keys - Create API key
+  - DELETE /api/user/settings/api-keys/:id - Delete API key
+  - PUT /api/user/settings/theme - Update theme
 
 ### TICKET-031: Setup CORS with Clerk domains
 **Acceptance Criteria:**
