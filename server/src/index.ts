@@ -106,7 +106,7 @@ app.get("/health", async (c) => {
 app.get("/hello", async (c) => {
   // This will be automatically formatted as ApiSuccessResponse
   return c.json({
-    message: "Hello BHVR!",
+    message: "Hello PM Tools!",
     timestamp: new Date().toISOString(),
   });
 });

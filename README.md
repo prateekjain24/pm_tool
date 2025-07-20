@@ -1,4 +1,4 @@
-# BHVR App 🦫
+# PM Tool Suite 🚀
 
 A full-stack TypeScript monorepo built with Bun, Hono, Vite, React, and shadcn/ui - ready for Railway deployment.
 
@@ -194,7 +194,6 @@ Run `bun run build:shared` to ensure shared types are compiled.
 
 ## Learn More
 
-- [BHVR Documentation](https://github.com/stevedylandev/bhvr)
 - [Bun Documentation](https://bun.sh/docs)
 - [Hono Documentation](https://hono.dev/docs)
 - [Vite Documentation](https://vitejs.dev/guide/)

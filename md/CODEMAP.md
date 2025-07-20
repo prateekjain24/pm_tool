@@ -2,7 +2,7 @@
 
 ## Overview
 
-PM Tool Suite is an AI-powered toolkit for Product Managers designed to enforce scientific rigor in experimentation through hypothesis validation, pre-test checks, and documentation generation. Built on the BHVR stack (Bun + Hono + Vite + React), it aims to reduce experiment planning time from 2 hours to 8 minutes while increasing experiment success rates by 25%.
+PM Tool Suite is an AI-powered toolkit for Product Managers designed to enforce scientific rigor in experimentation through hypothesis validation, pre-test checks, and documentation generation. Built with Bun + Hono + Vite + React, it aims to reduce experiment planning time from 2 hours to 8 minutes while increasing experiment success rates by 25%.
 
 **Key Business Goals:**
 - Reduce A/B test failure rate (currently 30-40% due to poor hypothesis formulation)

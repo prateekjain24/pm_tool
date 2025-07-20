@@ -13,7 +13,7 @@ This document covers tickets 116-150, focusing on:
 - **Database**: PostgreSQL with Drizzle ORM
 - **Cache**: Redis
 - **AI Providers**: OpenAI o3-mini, Claude Sonnet 4, Google Gemini 2.5 Pro
-- **Framework**: BHVR (Bun + Hono + Vite + React)
+- **Framework**: Bun + Hono + Vite + React
 
 ## Phase 6: Timeline Predictor (20 tickets)
 

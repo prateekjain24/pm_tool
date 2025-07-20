@@ -129,7 +129,7 @@ Product Managers struggle with scientific rigor in their experimentation process
 
 ## Next Steps
 
-1. Set up development environment with BHVR stack ✓
+1. Set up development environment with Bun + Hono + Vite + React stack ✓
 2. Design database schema for hypotheses, tests, and documents ✓
 3. Create wireframes for hypothesis builder UI
 4. Implement basic authentication flow

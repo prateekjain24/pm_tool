@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 PM Tool Suite - An AI-powered toolkit for Product Managers to enforce scientific rigor in experimentation through hypothesis validation, pre-test checks, and documentation generation.
 
-**Tech Stack**: BHVR (Bun + Hono + Vite + React) monorepo with TypeScript
+**Tech Stack**: Bun + Hono + Vite + React monorepo with TypeScript
 
 ## Common Development Commands
 

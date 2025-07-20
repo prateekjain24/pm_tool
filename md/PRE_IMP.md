@@ -9,7 +9,7 @@ This implementation plan breaks down the Pre-Experiment Check Tool into 180 one-
 - **Database**: PostgreSQL with Drizzle ORM
 - **Cache**: Redis
 - **AI Providers**: OpenAI o3-mini, Claude Sonnet 4, Google Gemini 2.5 Pro
-- **Framework**: BHVR (Bun + Hono + Vite + React)
+- **Framework**: Bun + Hono + Vite + React
 
 ## Phase 1: Foundation & Infrastructure (20 tickets)
 
@@ -2267,6 +2267,6 @@ The plan is organized into 9 phases that can be worked on with some parallelizat
 Key implementation notes:
 - Uses Clerk for authentication (not Lucia Auth)
 - Uses Biome for code formatting (not Prettier)
-- Leverages existing BHVR monorepo structure
+- Leverages existing monorepo structure
 - Focuses on delivering MVP value quickly
 - Includes comprehensive testing and monitoring
