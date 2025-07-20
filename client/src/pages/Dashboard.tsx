@@ -7,12 +7,8 @@ export function Dashboard() {
   return (
     <div className="container max-w-7xl mx-auto px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">
-          Welcome back, {user?.firstName || "there"}!
-        </h1>
-        <p className="text-muted-foreground">
-          Ready to create your next winning experiment?
-        </p>
+        <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.firstName || "there"}!</h1>
+        <p className="text-muted-foreground">Ready to create your next winning experiment?</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

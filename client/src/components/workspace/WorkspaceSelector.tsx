@@ -1,8 +1,8 @@
+import { Building, ChevronDown, Plus, Users } from "lucide-react";
 import { useState } from "react";
-import { ChevronDown, Plus, Building, Users } from "lucide-react";
-import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { cn } from "@/lib/utils";
 
 export function WorkspaceSelector() {
@@ -47,7 +47,7 @@ export function WorkspaceSelector() {
           "flex items-center gap-2 px-3 py-2 rounded-lg",
           "hover:bg-accent transition-colors",
           "text-sm font-medium",
-          isOpen && "bg-accent"
+          isOpen && "bg-accent",
         )}
         disabled={isSwitching}
       >
@@ -64,8 +64,16 @@ export function WorkspaceSelector() {
         <>
           {/* Backdrop */}
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Close workspace selector"
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setIsOpen(false);
+              }
+            }}
           />
 
           {/* Dropdown */}
@@ -98,7 +106,7 @@ export function WorkspaceSelector() {
                     className={cn(
                       "w-full text-left px-3 py-2 hover:bg-accent transition-colors",
                       "flex items-center justify-between",
-                      workspace.id === currentWorkspace.id && "bg-accent"
+                      workspace.id === currentWorkspace.id && "bg-accent",
                     )}
                   >
                     <div className="flex items-center gap-2">

@@ -112,12 +112,8 @@
           "name": "experiments_hypothesis_id_hypotheses_id_fk",
           "tableFrom": "experiments",
           "tableTo": "hypotheses",
-          "columnsFrom": [
-            "hypothesis_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["hypothesis_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -125,12 +121,8 @@
           "name": "experiments_workspace_id_workspaces_id_fk",
           "tableFrom": "experiments",
           "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -229,12 +221,8 @@
           "name": "hypotheses_user_id_users_id_fk",
           "tableFrom": "hypotheses",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -242,12 +230,8 @@
           "name": "hypotheses_workspace_id_workspaces_id_fk",
           "tableFrom": "hypotheses",
           "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -344,12 +328,8 @@
           "name": "hypothesis_scores_hypothesis_id_hypotheses_id_fk",
           "tableFrom": "hypothesis_scores",
           "tableTo": "hypotheses",
-          "columnsFrom": [
-            "hypothesis_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["hypothesis_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -357,12 +337,8 @@
           "name": "hypothesis_scores_scored_by_users_id_fk",
           "tableFrom": "hypothesis_scores",
           "tableTo": "users",
-          "columnsFrom": [
-            "scored_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["scored_by"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -448,12 +424,8 @@
           "name": "users_workspace_id_workspaces_id_fk",
           "tableFrom": "users",
           "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -463,9 +435,7 @@
         "users_clerk_id_unique": {
           "name": "users_clerk_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "clerk_id"
-          ]
+          "columns": ["clerk_id"]
         }
       },
       "policies": {},
@@ -517,9 +487,7 @@
         "workspaces_slug_unique": {
           "name": "workspaces_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},

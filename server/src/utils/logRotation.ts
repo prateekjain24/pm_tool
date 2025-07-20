@@ -1,6 +1,5 @@
-import fs from "fs";
+import fs, { createWriteStream, type WriteStream } from "fs";
 import path from "path";
-import { createWriteStream, WriteStream } from "fs";
 import { promisify } from "util";
 import zlib from "zlib";
 import { env } from "../config/env";
@@ -86,7 +85,7 @@ export class RotatingFileLogger {
     if (!this.currentStream) {
       this.currentFile = fileName;
       this.currentStream = createWriteStream(fileName, { flags: "a" });
-      
+
       // Get current file size
       try {
         const stats = await stat(fileName);
@@ -112,7 +111,7 @@ export class RotatingFileLogger {
       pid: process.pid,
     };
 
-    const line = JSON.stringify(logEntry) + "\n";
+    const line = `${JSON.stringify(logEntry)}\n`;
     const bytes = Buffer.byteLength(line);
 
     return new Promise((resolve, reject) => {
@@ -139,7 +138,7 @@ export class RotatingFileLogger {
     // Close current stream
     if (this.currentStream) {
       await new Promise<void>((resolve) => {
-        this.currentStream!.end(() => resolve());
+        this.currentStream?.end(() => resolve());
       });
       this.currentStream = null;
     }
@@ -165,7 +164,7 @@ export class RotatingFileLogger {
       const content = await fs.promises.readFile(filePath);
       const compressed = await gzip(content);
       const gzPath = `${filePath}.gz`;
-      
+
       await writeFile(gzPath, compressed);
       await unlink(filePath);
     } catch (error) {
@@ -179,9 +178,9 @@ export class RotatingFileLogger {
   private async cleanupOldFiles(): Promise<void> {
     try {
       const files = await readdir(this.config.logDirectory);
-      const logFiles = files.filter((f) => 
-        f.startsWith(this.config.filePrefix) && 
-        (f.endsWith(".log") || f.endsWith(".log.gz"))
+      const logFiles = files.filter(
+        (f) =>
+          f.startsWith(this.config.filePrefix) && (f.endsWith(".log") || f.endsWith(".log.gz")),
       );
 
       // Get file stats
@@ -190,7 +189,7 @@ export class RotatingFileLogger {
           const filePath = path.join(this.config.logDirectory, file);
           const stats = await stat(filePath);
           return { file, path: filePath, mtime: stats.mtime };
-        })
+        }),
       );
 
       // Sort by modification time (newest first)
@@ -204,10 +203,7 @@ export class RotatingFileLogger {
       cutoffDate.setDate(cutoffDate.getDate() - this.config.maxAge);
 
       for (const fileInfo of fileStats) {
-        if (
-          filesToDelete.includes(fileInfo) ||
-          fileInfo.mtime < cutoffDate
-        ) {
+        if (filesToDelete.includes(fileInfo) || fileInfo.mtime < cutoffDate) {
           try {
             await unlink(fileInfo.path);
           } catch (error) {
@@ -226,7 +222,7 @@ export class RotatingFileLogger {
   async close(): Promise<void> {
     if (this.currentStream) {
       await new Promise<void>((resolve) => {
-        this.currentStream!.end(() => resolve());
+        this.currentStream?.end(() => resolve());
       });
       this.currentStream = null;
     }
@@ -250,11 +246,7 @@ export function initializeFileLogging(config?: Partial<LogRotationConfig>): void
 /**
  * Write to file log
  */
-export async function writeToFileLog(
-  level: string,
-  message: string,
-  data?: any
-): Promise<void> {
+export async function writeToFileLog(level: string, message: string, data?: any): Promise<void> {
   if (fileLogger) {
     try {
       await fileLogger.write(level, message, data);

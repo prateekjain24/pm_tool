@@ -4,11 +4,11 @@ declare module "hono" {
   interface ContextVariableMap {
     // Auth
     user?: AuthUser;
-    
+
     // Request context
     requestId?: string;
     requestStartTime?: number;
-    
+
     // Validated data
     validatedJson?: any;
     validatedQuery?: any;

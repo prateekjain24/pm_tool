@@ -90,7 +90,7 @@ export async function optionalAuthMiddleware(c: Context, next: Next) {
     if (authHeader) {
       // Extract the token from Bearer scheme
       const token = authHeader.replace("Bearer ", "");
-      
+
       if (token) {
         // Create a mock request object for Clerk's authenticateRequest
         const mockRequest = {

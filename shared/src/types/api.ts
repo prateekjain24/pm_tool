@@ -22,7 +22,7 @@ export interface ApiErrorResponse {
   error: {
     code: string;
     message: string;
-    details?: Record<string, any>;
+    details?: Record<string, unknown>;
     stack?: string; // Only in development
   };
   meta?: {
@@ -118,20 +118,20 @@ export const ErrorCodes = {
   UNAUTHORIZED: "UNAUTHORIZED",
   FORBIDDEN: "FORBIDDEN",
   TOKEN_EXPIRED: "TOKEN_EXPIRED",
-  
+
   // Validation errors
   VALIDATION_ERROR: "VALIDATION_ERROR",
   INVALID_INPUT: "INVALID_INPUT",
-  
+
   // Resource errors
   NOT_FOUND: "NOT_FOUND",
   ALREADY_EXISTS: "ALREADY_EXISTS",
   CONFLICT: "CONFLICT",
-  
+
   // Server errors
   INTERNAL_ERROR: "INTERNAL_ERROR",
   SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
   RATE_LIMITED: "RATE_LIMITED",
 } as const;
 
-export type ErrorCode = typeof ErrorCodes[keyof typeof ErrorCodes];
+export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

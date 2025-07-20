@@ -1,30 +1,24 @@
-import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import type { 
-  UserSettings, 
-  ApiKeyResponse,
-  CreateApiKeyResponse,
-  NotificationPreferences,
-  ThemePreference
-} from "@shared/types";
-import { 
-  updateGeneralSettingsSchema, 
-  updateNotificationPreferencesSchema,
+import {
   createApiKeySchema,
+  updateGeneralSettingsSchema,
+  updateNotificationPreferencesSchema,
   updateThemeSchema,
 } from "@shared/schemas";
+import type { CreateApiKeyResponse } from "@shared/types";
+import { Hono } from "hono";
 import { authMiddleware } from "../middleware/auth";
-import { requireUser } from "../utils/auth";
-import { apiSuccess, apiErrors } from "../utils/apiResponse";
-import { logger } from "../utils/logger";
 import {
-  getOrCreateUserSettings,
-  updateUserSettings,
-  updateNotificationPreferences,
   addApiKey,
   deleteApiKey,
+  getOrCreateUserSettings,
+  updateNotificationPreferences,
   updateTheme,
+  updateUserSettings,
 } from "../repositories/settings";
+import { apiErrors, apiSuccess } from "../utils/apiResponse";
+import { requireUser } from "../utils/auth";
+import { logger } from "../utils/logger";
 
 const settingsRouter = new Hono();
 
@@ -34,7 +28,7 @@ settingsRouter.use("*", authMiddleware);
 // Get user settings
 settingsRouter.get("/", async (c) => {
   const user = requireUser(c);
-  
+
   logger.info({ userId: user.id }, "Fetching user settings");
 
   try {
@@ -48,55 +42,57 @@ settingsRouter.get("/", async (c) => {
     logger.info({ userId: user.id, settings }, "Returning user settings");
     return apiSuccess(c, settings);
   } catch (error) {
-    logger.error({ 
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      userId: user.id 
-    }, "Failed to fetch user settings");
+    logger.error(
+      {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        userId: user.id,
+      },
+      "Failed to fetch user settings",
+    );
     return apiErrors.internal(c, "Failed to fetch user settings");
   }
 });
 
 // Update general settings
-settingsRouter.put(
-  "/general",
-  zValidator("json", updateGeneralSettingsSchema),
-  async (c) => {
-    const user = requireUser(c);
-    const data = c.req.valid("json");
+settingsRouter.put("/general", zValidator("json", updateGeneralSettingsSchema), async (c) => {
+  const user = requireUser(c);
+  const data = c.req.valid("json");
 
-    logger.info({ userId: user.id, requestData: data }, "Updating general settings");
+  logger.info({ userId: user.id, requestData: data }, "Updating general settings");
 
-    try {
-      // Ensure settings exist first
-      await getOrCreateUserSettings(user.id, {
-        email: user.email || "no-email@example.com",
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
+  try {
+    // Ensure settings exist first
+    await getOrCreateUserSettings(user.id, {
+      email: user.email || "no-email@example.com",
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
 
-      // Update settings in database
-      const updatedSettings = await updateUserSettings(user.id, {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        avatarUrl: data.avatarUrl,
-      });
+    // Update settings in database
+    const updatedSettings = await updateUserSettings(user.id, {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      avatarUrl: data.avatarUrl,
+    });
 
-      if (!updatedSettings) {
-        return apiErrors.notFound(c, "User settings");
-      }
+    if (!updatedSettings) {
+      return apiErrors.notFound(c, "User settings");
+    }
 
-      return apiSuccess(c, updatedSettings);
-    } catch (error) {
-      logger.error({ 
+    return apiSuccess(c, updatedSettings);
+  } catch (error) {
+    logger.error(
+      {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
-        userId: user.id 
-      }, "Failed to update general settings");
-      return apiErrors.internal(c, "Failed to update settings");
-    }
+        userId: user.id,
+      },
+      "Failed to update general settings",
+    );
+    return apiErrors.internal(c, "Failed to update settings");
   }
-);
+});
 
 // Update notification preferences
 settingsRouter.put(
@@ -125,62 +121,64 @@ settingsRouter.put(
 
       return apiSuccess(c, updatedNotifications);
     } catch (error) {
-      logger.error({ 
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-        userId: user.id 
-      }, "Failed to update notification preferences");
+      logger.error(
+        {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          userId: user.id,
+        },
+        "Failed to update notification preferences",
+      );
       return apiErrors.internal(c, "Failed to update notification preferences");
     }
-  }
+  },
 );
 
 // Create API key
-settingsRouter.post(
-  "/api-keys",
-  zValidator("json", createApiKeySchema),
-  async (c) => {
-    const user = requireUser(c);
-    const data = c.req.valid("json");
+settingsRouter.post("/api-keys", zValidator("json", createApiKeySchema), async (c) => {
+  const user = requireUser(c);
+  const data = c.req.valid("json");
 
-    logger.info({ userId: user.id }, "Creating API key");
+  logger.info({ userId: user.id }, "Creating API key");
 
-    try {
-      // Ensure settings exist first
-      await getOrCreateUserSettings(user.id, {
-        email: user.email || "no-email@example.com",
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
+  try {
+    // Ensure settings exist first
+    await getOrCreateUserSettings(user.id, {
+      email: user.email || "no-email@example.com",
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
 
-      // Create API key in database
-      const result = await addApiKey(user.id, {
-        name: data.name,
-        expiresIn: data.expiresIn,
-      });
+    // Create API key in database
+    const result = await addApiKey(user.id, {
+      name: data.name,
+      expiresIn: data.expiresIn,
+    });
 
-      if (!result) {
-        return apiErrors.notFound(c, "User settings");
-      }
+    if (!result) {
+      return apiErrors.notFound(c, "User settings");
+    }
 
-      logger.info({ keyId: result.apiKey.id }, "API key created");
+    logger.info({ keyId: result.apiKey.id }, "API key created");
 
-      const response: CreateApiKeyResponse = {
-        apiKey: result.apiKey,
-        plainTextKey: result.plainTextKey,
-      };
+    const response: CreateApiKeyResponse = {
+      apiKey: result.apiKey,
+      plainTextKey: result.plainTextKey,
+    };
 
-      return apiSuccess(c, response, { status: 201 });
-    } catch (error) {
-      logger.error({ 
+    return apiSuccess(c, response, { status: 201 });
+  } catch (error) {
+    logger.error(
+      {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
-        userId: user.id 
-      }, "Failed to create API key");
-      return apiErrors.internal(c, "Failed to create API key");
-    }
+        userId: user.id,
+      },
+      "Failed to create API key",
+    );
+    return apiErrors.internal(c, "Failed to create API key");
   }
-);
+});
 
 // Delete API key
 settingsRouter.delete("/api-keys/:keyId", async (c) => {
@@ -200,51 +198,53 @@ settingsRouter.delete("/api-keys/:keyId", async (c) => {
 
     return apiSuccess(c, { deleted: true });
   } catch (error) {
-    logger.error({ 
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      userId: user.id,
-      keyId 
-    }, "Failed to delete API key");
+    logger.error(
+      {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        userId: user.id,
+        keyId,
+      },
+      "Failed to delete API key",
+    );
     return apiErrors.internal(c, "Failed to delete API key");
   }
 });
 
 // Update theme preference
-settingsRouter.put(
-  "/theme",
-  zValidator("json", updateThemeSchema),
-  async (c) => {
-    const user = requireUser(c);
-    const data = c.req.valid("json");
+settingsRouter.put("/theme", zValidator("json", updateThemeSchema), async (c) => {
+  const user = requireUser(c);
+  const data = c.req.valid("json");
 
-    logger.info({ userId: user.id, theme: data.theme }, "Updating theme preference");
+  logger.info({ userId: user.id, theme: data.theme }, "Updating theme preference");
 
-    try {
-      // Ensure settings exist first
-      await getOrCreateUserSettings(user.id, {
-        email: user.email || "no-email@example.com",
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
+  try {
+    // Ensure settings exist first
+    await getOrCreateUserSettings(user.id, {
+      email: user.email || "no-email@example.com",
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
 
-      // Update theme in database
-      const updatedTheme = await updateTheme(user.id, data.theme);
+    // Update theme in database
+    const updatedTheme = await updateTheme(user.id, data.theme);
 
-      if (!updatedTheme) {
-        return apiErrors.notFound(c, "User settings");
-      }
+    if (!updatedTheme) {
+      return apiErrors.notFound(c, "User settings");
+    }
 
-      return apiSuccess(c, { theme: updatedTheme });
-    } catch (error) {
-      logger.error({ 
+    return apiSuccess(c, { theme: updatedTheme });
+  } catch (error) {
+    logger.error(
+      {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
-        userId: user.id 
-      }, "Failed to update theme preference");
-      return apiErrors.internal(c, "Failed to update theme preference");
-    }
+        userId: user.id,
+      },
+      "Failed to update theme preference",
+    );
+    return apiErrors.internal(c, "Failed to update theme preference");
   }
-);
+});
 
 export { settingsRouter };

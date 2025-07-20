@@ -2,10 +2,10 @@ export interface Document {
   id: string;
   experimentId?: string;
   workspaceId: string;
-  type: 'prd' | 'test_plan' | 'summary' | 'hypothesis_doc';
+  type: "prd" | "test_plan" | "summary" | "hypothesis_doc";
   title: string;
   content: string;
-  format: 'markdown' | 'pdf' | 'html';
+  format: "markdown" | "pdf" | "html";
   version: number;
   previousVersionId?: string;
   exportedAt?: Date;
@@ -37,10 +37,10 @@ export interface DocumentVersion {
 
 export interface CreateDocumentInput {
   experimentId?: string;
-  type: Document['type'];
+  type: Document["type"];
   title: string;
   content: string;
-  format?: Document['format'];
+  format?: Document["format"];
 }
 
 export interface UpdateDocumentInput {
@@ -50,7 +50,7 @@ export interface UpdateDocumentInput {
 }
 
 export interface ExportDocumentInput {
-  format: 'pdf' | 'markdown' | 'html';
+  format: "pdf" | "markdown" | "html";
   includeMetadata?: boolean;
 }
 
@@ -60,7 +60,7 @@ export interface ShareDocumentInput {
 
 export interface DocumentFilter {
   experimentId?: string;
-  type?: Document['type'];
+  type?: Document["type"];
   createdBy?: string;
   createdAfter?: Date;
   createdBefore?: Date;

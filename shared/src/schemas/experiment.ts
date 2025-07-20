@@ -10,7 +10,7 @@ export const ExperimentStatus = {
   CANCELLED: "cancelled",
 } as const;
 
-export type ExperimentStatus = typeof ExperimentStatus[keyof typeof ExperimentStatus];
+export type ExperimentStatus = (typeof ExperimentStatus)[keyof typeof ExperimentStatus];
 
 /**
  * Variant schema
@@ -37,7 +37,12 @@ export const experimentSchema = z.object({
   confidenceLevel: z.number().min(80).max(99.9),
   statisticalPower: z.number().min(50).max(99.9),
   variants: z.array(variantSchema).min(2, "At least 2 variants are required"),
-  status: z.enum([ExperimentStatus.PLANNING, ExperimentStatus.RUNNING, ExperimentStatus.COMPLETED, ExperimentStatus.CANCELLED]),
+  status: z.enum([
+    ExperimentStatus.PLANNING,
+    ExperimentStatus.RUNNING,
+    ExperimentStatus.COMPLETED,
+    ExperimentStatus.CANCELLED,
+  ]),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -88,7 +93,14 @@ export const createExperimentInputSchema = z.object({
  * Update experiment input schema
  */
 export const updateExperimentInputSchema = createExperimentInputSchema.partial().extend({
-  status: z.enum([ExperimentStatus.PLANNING, ExperimentStatus.RUNNING, ExperimentStatus.COMPLETED, ExperimentStatus.CANCELLED]).optional(),
+  status: z
+    .enum([
+      ExperimentStatus.PLANNING,
+      ExperimentStatus.RUNNING,
+      ExperimentStatus.COMPLETED,
+      ExperimentStatus.CANCELLED,
+    ])
+    .optional(),
 });
 
 /**
@@ -116,7 +128,7 @@ export function validateUpdateExperimentInput(data: unknown) {
 export function validateVariants(variants: unknown[]) {
   const result = z.array(variantSchema).safeParse(variants);
   if (!result.success) return result;
-  
+
   // Additional validation: allocations must sum to 100
   const totalAllocation = result.data.reduce((sum, variant) => sum + variant.allocation, 0);
   if (Math.abs(totalAllocation - 100) > 0.01) {
@@ -125,7 +137,7 @@ export function validateVariants(variants: unknown[]) {
       error: new Error("Variant allocations must sum to 100%"),
     };
   }
-  
+
   return result;
 }
 

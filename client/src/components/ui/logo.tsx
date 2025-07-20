@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import type { SVGProps } from "react";
+import { cn } from "@/lib/utils";
 
 interface LogoProps extends SVGProps<SVGSVGElement> {
   size?: "sm" | "md" | "lg";
@@ -40,11 +40,12 @@ export function Logo({
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        aria-label="PM Tools Logo"
         className={cn(
           sizeClasses[size],
           colorVariants[variant],
           animated && "transition-transform duration-200 ease-out group-hover:scale-110",
-          className
+          className,
         )}
         {...props}
       >
@@ -60,12 +61,14 @@ export function Logo({
       </svg>
 
       {showText && (
-        <span className={cn(
-          "font-semibold transition-colors duration-200",
-          textSizeClasses[size],
-          colorVariants[variant],
-          animated && "group-hover:text-primary/80"
-        )}>
+        <span
+          className={cn(
+            "font-semibold transition-colors duration-200",
+            textSizeClasses[size],
+            colorVariants[variant],
+            animated && "group-hover:text-primary/80",
+          )}
+        >
           PM Tools
         </span>
       )}
@@ -117,12 +120,8 @@ export function LogoAnimated({
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn(
-        sizeClasses[size],
-        colorVariants[variant],
-        "animate-pulse",
-        className
-      )}
+      aria-label="PM Tools Logo"
+      className={cn(sizeClasses[size], colorVariants[variant], "animate-pulse", className)}
       {...props}
     >
       <path

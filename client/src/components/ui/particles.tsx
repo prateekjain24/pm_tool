@@ -14,6 +14,19 @@ interface ParticlesProps {
   vy?: number;
 }
 
+interface Particle {
+  x: number;
+  y: number;
+  translateX: number;
+  translateY: number;
+  size: number;
+  alpha: number;
+  targetAlpha: number;
+  dx: number;
+  dy: number;
+  magnetism: number;
+}
+
 export function Particles({
   className = "",
   quantity = 100,
@@ -27,7 +40,7 @@ export function Particles({
 }: ParticlesProps) {
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
-  const [particles, setParticles] = useState<any[]>([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import type { Context, Next } from "hono";
+import { getUser } from "../utils/auth";
 import { getLogger } from "../utils/logger";
 import { getRequestId, setRequestId } from "../utils/requestContext";
-import { getUser } from "../utils/auth";
 
 const logger = getLogger("http");
 
@@ -18,7 +18,7 @@ function generateRequestId(): string {
 function sanitizeHeaders(headers: Headers): Record<string, string> {
   const sanitized: Record<string, string> = {};
   const sensitiveHeaders = ["authorization", "cookie", "x-api-key"];
-  
+
   headers.forEach((value, key) => {
     if (sensitiveHeaders.includes(key.toLowerCase())) {
       sanitized[key] = "[REDACTED]";
@@ -26,7 +26,7 @@ function sanitizeHeaders(headers: Headers): Record<string, string> {
       sanitized[key] = value;
     }
   });
-  
+
   return sanitized;
 }
 
@@ -36,41 +36,43 @@ function sanitizeHeaders(headers: Headers): Record<string, string> {
 export async function loggingMiddleware(c: Context, next: Next) {
   const start = Date.now();
   const requestId = generateRequestId();
-  
+
   // Set request ID in context
   setRequestId(c, requestId);
-  
+
   // Add request ID to response headers
   c.header("X-Request-ID", requestId);
-  
+
   // Extract request info
   const req = c.req;
   const method = req.method;
   const path = req.path;
   const query = req.query();
   const headers = sanitizeHeaders(req.raw.headers);
-  
+
   // Log request
-  logger.info({
-    type: "request",
-    requestId,
-    method,
-    path,
-    query,
-    headers,
-    ip: c.env?.remoteAddr || req.header("x-forwarded-for") || "unknown",
-    userAgent: req.header("user-agent"),
-  }, `${method} ${path}`);
-  
-  try {
-    await next();
-    
-    // Log response
-    const duration = Date.now() - start;
-    const status = c.res.status;
-    const user = getUser(c);
-    
-    logger.info({
+  logger.info(
+    {
+      type: "request",
+      requestId,
+      method,
+      path,
+      query,
+      headers,
+      ip: c.env?.remoteAddr || req.header("x-forwarded-for") || "unknown",
+      userAgent: req.header("user-agent"),
+    },
+    `${method} ${path}`,
+  );
+  await next();
+
+  // Log response
+  const duration = Date.now() - start;
+  const status = c.res.status;
+  const user = getUser(c);
+
+  logger.info(
+    {
       type: "response",
       requestId,
       method,
@@ -79,15 +81,12 @@ export async function loggingMiddleware(c: Context, next: Next) {
       duration,
       userId: user?.id,
       userEmail: user?.email,
-    }, `${method} ${path} ${status} ${duration}ms`);
-    
-    // Add timing header
-    c.header("X-Response-Time", `${duration}ms`);
-    
-  } catch (error) {
-    // Error will be logged by error handler
-    throw error;
-  }
+    },
+    `${method} ${path} ${status} ${duration}ms`,
+  );
+
+  // Add timing header
+  c.header("X-Response-Time", `${duration}ms`);
 }
 
 /**
@@ -95,24 +94,27 @@ export async function loggingMiddleware(c: Context, next: Next) {
  */
 export async function performanceMiddleware(c: Context, next: Next) {
   const start = Date.now();
-  
+
   // Set start time in context for other middleware to use
   c.set("requestStartTime", start);
-  
+
   await next();
-  
+
   const duration = Date.now() - start;
-  
+
   // Log slow requests
   if (duration > 1000) {
-    logger.warn({
-      requestId: getRequestId(c),
-      method: c.req.method,
-      path: c.req.path,
-      duration,
-    }, `Slow request detected: ${c.req.method} ${c.req.path} took ${duration}ms`);
+    logger.warn(
+      {
+        requestId: getRequestId(c),
+        method: c.req.method,
+        path: c.req.path,
+        duration,
+      },
+      `Slow request detected: ${c.req.method} ${c.req.path} took ${duration}ms`,
+    );
   }
-  
+
   // Add Server-Timing header for performance debugging
   c.header("Server-Timing", `total;dur=${duration}`);
 }

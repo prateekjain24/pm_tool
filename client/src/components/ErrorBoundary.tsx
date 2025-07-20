@@ -1,8 +1,9 @@
-import React, { Component, ReactNode, ErrorInfo } from "react";
-import { AlertCircle, RefreshCw, Home } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import * as Sentry from "@sentry/react";
+import { AlertCircle, Home, RefreshCw } from "lucide-react";
+import type React from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   children: ReactNode;
@@ -140,8 +141,8 @@ export class ErrorBoundary extends Component<Props, State> {
               <Alert variant="destructive">
                 <AlertTitle>Multiple Errors Detected</AlertTitle>
                 <AlertDescription>
-                  This error has occurred multiple times. There might be a persistent issue.
-                  Please contact support if this continues.
+                  This error has occurred multiple times. There might be a persistent issue. Please
+                  contact support if this continues.
                 </AlertDescription>
               </Alert>
             )}
@@ -157,7 +158,7 @@ export class ErrorBoundary extends Component<Props, State> {
 // Higher-order component for functional components
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  fallback?: ReactNode
+  fallback?: ReactNode,
 ) {
   return (props: P) => (
     <ErrorBoundary fallback={fallback}>

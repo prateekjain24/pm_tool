@@ -40,7 +40,7 @@ export function getRequestStartTime(c: Context): number | undefined {
 export function getRequestDuration(c: Context): number | undefined {
   const startTime = getRequestStartTime(c);
   if (!startTime) return undefined;
-  
+
   return Date.now() - startTime;
 }
 

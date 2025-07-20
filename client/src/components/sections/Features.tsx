@@ -1,4 +1,12 @@
-import { Brain, CheckCircle, BarChart3, FileText, TestTube2, ArrowUpRight, Sparkles } from "lucide-react";
+import {
+  ArrowUpRight,
+  BarChart3,
+  Brain,
+  CheckCircle,
+  FileText,
+  Sparkles,
+  TestTube2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
@@ -7,7 +15,8 @@ const features = [
     title: "Hypothesis Builder",
     metric: "90%",
     metricLabel: "better hypotheses",
-    description: "Guide your team through structured hypothesis creation with real-time quality scoring.",
+    description:
+      "Guide your team through structured hypothesis creation with real-time quality scoring.",
     icon: Brain,
     accent: "blue",
     gradient: "from-blue-500 to-cyan-500",
@@ -60,14 +69,14 @@ const features = [
 ];
 
 interface FeatureCardProps {
-  feature: typeof features[0];
+  feature: (typeof features)[0];
   className?: string;
   index: number;
 }
 
 function FeatureCard({ feature, className, index }: FeatureCardProps) {
   const Icon = feature.icon;
-  
+
   return (
     <div
       className={cn(
@@ -77,35 +86,42 @@ function FeatureCard({ feature, className, index }: FeatureCardProps) {
         "hover:border-border",
         "cursor-pointer overflow-hidden",
         feature.background,
-        className
+        className,
       )}
       style={{
         animationDelay: `${index * 100}ms`,
       }}
     >
       {/* Subtle gradient overlay on hover */}
-      <div className={cn(
-        "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-        `bg-gradient-to-br ${feature.gradient}`
-      )} style={{ opacity: 0.03 }} />
+      <div
+        className={cn(
+          "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+          `bg-gradient-to-br ${feature.gradient}`,
+        )}
+        style={{ opacity: 0.03 }}
+      />
 
       <div className="relative z-10 flex gap-4 md:gap-5">
         {/* Left column: Icon + Metric */}
         <div className="flex-shrink-0 w-20 md:w-24">
-          <div className={cn(
-            "p-2 rounded-lg mb-2",
-            `bg-gradient-to-br ${feature.gradient}`,
-            "text-white shadow-md"
-          )}>
+          <div
+            className={cn(
+              "p-2 rounded-lg mb-2",
+              `bg-gradient-to-br ${feature.gradient}`,
+              "text-white shadow-md",
+            )}
+          >
             <Icon className="w-4 h-4" strokeWidth={2.5} />
           </div>
           <div>
-            <div className={cn(
-              "text-2xl md:text-3xl font-bold tracking-tight leading-none",
-              "bg-gradient-to-br",
-              feature.gradient,
-              "bg-clip-text text-transparent"
-            )}>
+            <div
+              className={cn(
+                "text-2xl md:text-3xl font-bold tracking-tight leading-none",
+                "bg-gradient-to-br",
+                feature.gradient,
+                "bg-clip-text text-transparent",
+              )}
+            >
               {feature.metric}
             </div>
             <div className="text-xs text-muted-foreground font-medium mt-0.5">
@@ -134,7 +150,7 @@ export function Features() {
     <section className="pt-6 pb-16 lg:pt-8 lg:pb-20 bg-muted/30 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-grid-small-black/[0.02] dark:bg-grid-small-white/[0.02]" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section header */}
         <div className="max-w-2xl mb-8 lg:mb-12">
@@ -153,32 +169,32 @@ export function Features() {
         {/* Features grid - Balanced layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
           {/* First row - 2 cards */}
-          <FeatureCard 
-            feature={features[0]} 
+          <FeatureCard
+            feature={features[0]}
             className="animate-in fade-in slide-in-from-bottom-3"
             index={0}
           />
-          <FeatureCard 
-            feature={features[1]} 
+          <FeatureCard
+            feature={features[1]}
             className="animate-in fade-in slide-in-from-bottom-3"
             index={1}
           />
-          
+
           {/* Second row - 2 cards */}
-          <FeatureCard 
-            feature={features[2]} 
+          <FeatureCard
+            feature={features[2]}
             className="animate-in fade-in slide-in-from-bottom-3"
             index={2}
           />
-          <FeatureCard 
-            feature={features[3]} 
+          <FeatureCard
+            feature={features[3]}
             className="animate-in fade-in slide-in-from-bottom-3"
             index={3}
           />
-          
+
           {/* Third row - 1 card centered */}
-          <FeatureCard 
-            feature={features[4]} 
+          <FeatureCard
+            feature={features[4]}
             className="md:col-span-2 animate-in fade-in slide-in-from-bottom-3"
             index={4}
           />

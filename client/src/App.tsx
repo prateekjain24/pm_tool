@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { PublicHeader } from "./components/layout/PublicHeader";
-import { DashboardLayout } from "./components/layout/DashboardLayout";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
-import { Landing } from "./pages/Landing";
-import { SignInPage } from "./pages/SignIn";
-import { SignUpPage } from "./pages/SignUp";
+import { DashboardLayout } from "./components/layout/DashboardLayout";
+import { PublicHeader } from "./components/layout/PublicHeader";
 import { Dashboard } from "./pages/Dashboard";
-import { Onboarding } from "./pages/Onboarding";
+import { Landing } from "./pages/Landing";
 import { LogoDemo } from "./pages/LogoDemo";
+import { Onboarding } from "./pages/Onboarding";
 import { Profile } from "./pages/Profile";
 import { Settings } from "./pages/Settings";
+import { SignInPage } from "./pages/SignIn";
+import { SignUpPage } from "./pages/SignUp";
 
 function App() {
   return (
@@ -51,9 +51,33 @@ function App() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/hypotheses" element={<div className="p-6"><h1 className="text-2xl font-bold">Hypotheses</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
-          <Route path="/experiments" element={<div className="p-6"><h1 className="text-2xl font-bold">Experiments</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
-          <Route path="/documents" element={<div className="p-6"><h1 className="text-2xl font-bold">Documents</h1><p className="text-muted-foreground mt-2">Coming soon...</p></div>} />
+          <Route
+            path="/hypotheses"
+            element={
+              <div className="p-6">
+                <h1 className="text-2xl font-bold">Hypotheses</h1>
+                <p className="text-muted-foreground mt-2">Coming soon...</p>
+              </div>
+            }
+          />
+          <Route
+            path="/experiments"
+            element={
+              <div className="p-6">
+                <h1 className="text-2xl font-bold">Experiments</h1>
+                <p className="text-muted-foreground mt-2">Coming soon...</p>
+              </div>
+            }
+          />
+          <Route
+            path="/documents"
+            element={
+              <div className="p-6">
+                <h1 className="text-2xl font-bold">Documents</h1>
+                <p className="text-muted-foreground mt-2">Coming soon...</p>
+              </div>
+            }
+          />
           <Route path="/settings" element={<Settings />} />
         </Route>
 

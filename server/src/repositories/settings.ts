@@ -1,13 +1,13 @@
+import { generateApiKey } from "@shared/schemas";
+import type {
+  ApiKeyResponse,
+  NotificationPreferences,
+  ThemePreference,
+  UserSettings,
+} from "@shared/types";
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
-import { userSettings, type UserSettingsInsert, type UserSettingsSelect } from "../db/schema";
-import type { 
-  UserSettings, 
-  NotificationPreferences, 
-  ApiKeyResponse, 
-  ThemePreference 
-} from "@shared/types";
-import { generateApiKey } from "@shared/schemas";
+import { type UserSettingsInsert, userSettings } from "../db/schema";
 import { getOrCreateUser } from "./users";
 
 /**
@@ -54,8 +54,8 @@ export async function getUserSettings(userId: string): Promise<UserSettings | nu
  * Create default user settings
  */
 export async function createUserSettings(
-  userId: string, 
-  data: Partial<UserSettings>
+  userId: string,
+  data: Partial<UserSettings>,
 ): Promise<UserSettings> {
   const settingsData: UserSettingsInsert = {
     userId,
@@ -81,10 +81,7 @@ export async function createUserSettings(
   };
 
   const db = getDb();
-  const [inserted] = await db
-    .insert(userSettings)
-    .values(settingsData)
-    .returning();
+  const [inserted] = await db.insert(userSettings).values(settingsData).returning();
 
   return {
     id: inserted.id,
@@ -105,15 +102,15 @@ export async function createUserSettings(
  * Update general user settings
  */
 export async function updateUserSettings(
-  userId: string, 
+  userId: string,
   data: {
     firstName?: string | null;
     lastName?: string | null;
     avatarUrl?: string | null;
-  }
+  },
 ): Promise<UserSettings | null> {
   console.log("updateUserSettings called with:", { userId, data });
-  
+
   const db = getDb();
   const updateData = {
     firstName: data.firstName,
@@ -121,15 +118,15 @@ export async function updateUserSettings(
     avatarUrl: data.avatarUrl,
     updatedAt: new Date(),
   };
-  
+
   console.log("Updating with data:", updateData);
-  
+
   const [updated] = await db
     .update(userSettings)
     .set(updateData)
     .where(eq(userSettings.userId, userId))
     .returning();
-  
+
   console.log("Update result:", updated);
 
   if (!updated) {
@@ -156,7 +153,7 @@ export async function updateUserSettings(
  */
 export async function updateNotificationPreferences(
   userId: string,
-  preferences: Partial<NotificationPreferences>
+  preferences: Partial<NotificationPreferences>,
 ): Promise<NotificationPreferences | null> {
   // First get current settings
   const current = await getUserSettings(userId);
@@ -196,7 +193,7 @@ export async function addApiKey(
   keyData: {
     name: string;
     expiresIn?: number;
-  }
+  },
 ): Promise<{ apiKey: ApiKeyResponse; plainTextKey: string } | null> {
   // Get current settings
   const current = await getUserSettings(userId);
@@ -212,7 +209,7 @@ export async function addApiKey(
     key: plainTextKey, // In production, store hashed version
     lastUsedAt: null,
     createdAt: new Date(),
-    expiresAt: keyData.expiresIn 
+    expiresAt: keyData.expiresIn
       ? new Date(Date.now() + keyData.expiresIn * 24 * 60 * 60 * 1000)
       : null,
   };
@@ -235,10 +232,7 @@ export async function addApiKey(
 /**
  * Delete an API key
  */
-export async function deleteApiKey(
-  userId: string,
-  keyId: string
-): Promise<boolean> {
+export async function deleteApiKey(userId: string, keyId: string): Promise<boolean> {
   // Get current settings
   const current = await getUserSettings(userId);
   if (!current) {
@@ -246,7 +240,7 @@ export async function deleteApiKey(
   }
 
   // Filter out the key
-  const updatedKeys = current.apiKeys.filter(key => key.id !== keyId);
+  const updatedKeys = current.apiKeys.filter((key) => key.id !== keyId);
 
   if (updatedKeys.length === current.apiKeys.length) {
     // Key not found
@@ -270,7 +264,7 @@ export async function deleteApiKey(
  */
 export async function updateTheme(
   userId: string,
-  theme: ThemePreference
+  theme: ThemePreference,
 ): Promise<ThemePreference | null> {
   const db = getDb();
   const [updated] = await db
@@ -282,7 +276,7 @@ export async function updateTheme(
     .where(eq(userSettings.userId, userId))
     .returning();
 
-  return updated ? updated.theme as ThemePreference : null;
+  return updated ? (updated.theme as ThemePreference) : null;
 }
 
 /**
@@ -294,7 +288,7 @@ export async function getOrCreateUserSettings(
     email: string;
     firstName?: string | null;
     lastName?: string | null;
-  }
+  },
 ): Promise<UserSettings> {
   // First ensure the user exists in the database
   await getOrCreateUser({

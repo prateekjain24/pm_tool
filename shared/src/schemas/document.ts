@@ -10,7 +10,7 @@ export const DocumentType = {
   HYPOTHESIS_DOC: "hypothesis_doc",
 } as const;
 
-export type DocumentType = typeof DocumentType[keyof typeof DocumentType];
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType];
 
 /**
  * Document format enum
@@ -21,7 +21,7 @@ export const DocumentFormat = {
   HTML: "html",
 } as const;
 
-export type DocumentFormat = typeof DocumentFormat[keyof typeof DocumentFormat];
+export type DocumentFormat = (typeof DocumentFormat)[keyof typeof DocumentFormat];
 
 /**
  * Edit history entry schema
@@ -39,10 +39,17 @@ export const documentSchema = z.object({
   id: z.string().uuid(),
   experimentId: z.string().uuid().optional(),
   workspaceId: z.string().uuid(),
-  type: z.enum([DocumentType.PRD, DocumentType.TEST_PLAN, DocumentType.SUMMARY, DocumentType.HYPOTHESIS_DOC]),
+  type: z.enum([
+    DocumentType.PRD,
+    DocumentType.TEST_PLAN,
+    DocumentType.SUMMARY,
+    DocumentType.HYPOTHESIS_DOC,
+  ]),
   title: z.string().min(3, "Title must be at least 3 characters"),
   content: z.string().min(10, "Content must be at least 10 characters"),
-  format: z.enum([DocumentFormat.MARKDOWN, DocumentFormat.PDF, DocumentFormat.HTML]).default(DocumentFormat.MARKDOWN),
+  format: z
+    .enum([DocumentFormat.MARKDOWN, DocumentFormat.PDF, DocumentFormat.HTML])
+    .default(DocumentFormat.MARKDOWN),
   version: z.number().int().positive(),
   previousVersionId: z.string().uuid().optional(),
   exportedAt: z.date().optional(),
@@ -74,10 +81,17 @@ export const documentVersionSchema = z.object({
  */
 export const createDocumentInputSchema = z.object({
   experimentId: z.string().uuid().optional(),
-  type: z.enum([DocumentType.PRD, DocumentType.TEST_PLAN, DocumentType.SUMMARY, DocumentType.HYPOTHESIS_DOC]),
+  type: z.enum([
+    DocumentType.PRD,
+    DocumentType.TEST_PLAN,
+    DocumentType.SUMMARY,
+    DocumentType.HYPOTHESIS_DOC,
+  ]),
   title: z.string().min(3, "Title must be at least 3 characters"),
   content: z.string().min(10, "Content must be at least 10 characters"),
-  format: z.enum([DocumentFormat.MARKDOWN, DocumentFormat.PDF, DocumentFormat.HTML]).default(DocumentFormat.MARKDOWN),
+  format: z
+    .enum([DocumentFormat.MARKDOWN, DocumentFormat.PDF, DocumentFormat.HTML])
+    .default(DocumentFormat.MARKDOWN),
 });
 
 /**
@@ -109,7 +123,14 @@ export const shareDocumentInputSchema = z.object({
  */
 export const documentFilterSchema = z.object({
   experimentId: z.string().uuid().optional(),
-  type: z.enum([DocumentType.PRD, DocumentType.TEST_PLAN, DocumentType.SUMMARY, DocumentType.HYPOTHESIS_DOC]).optional(),
+  type: z
+    .enum([
+      DocumentType.PRD,
+      DocumentType.TEST_PLAN,
+      DocumentType.SUMMARY,
+      DocumentType.HYPOTHESIS_DOC,
+    ])
+    .optional(),
   createdBy: z.string().uuid().optional(),
   createdAfter: z.date().optional(),
   createdBefore: z.date().optional(),

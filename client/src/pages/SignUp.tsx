@@ -12,9 +12,7 @@ export function SignUpPage() {
             <span className="text-2xl font-bold">PM Tools</span>
           </div>
           <h1 className="text-3xl font-bold mb-2">Create your account</h1>
-          <p className="text-muted-foreground">
-            Start improving your experiments in minutes
-          </p>
+          <p className="text-muted-foreground">Start improving your experiments in minutes</p>
         </div>
         <SignUp
           appearance={{

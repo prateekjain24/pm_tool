@@ -67,11 +67,7 @@ export function initSentry() {
 /**
  * Set user context for Sentry
  */
-export function setSentryUser(user: {
-  id: string;
-  email?: string;
-  username?: string;
-}) {
+export function setSentryUser(user: { id: string; email?: string; username?: string }) {
   if (!SENTRY_DSN) return;
 
   Sentry.setUser({
@@ -95,7 +91,7 @@ export function clearSentryUser() {
 export function captureMessage(
   message: string,
   level: Sentry.SeverityLevel = "info",
-  context?: Record<string, any>
+  context?: Record<string, unknown>,
 ) {
   if (!SENTRY_DSN) return;
 
@@ -116,7 +112,7 @@ export function addBreadcrumb(breadcrumb: {
   message: string;
   category?: string;
   level?: Sentry.SeverityLevel;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }) {
   if (!SENTRY_DSN) return;
 

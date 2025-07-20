@@ -1,32 +1,14 @@
+import { Bell, ChevronLeft, Key, Palette, User } from "lucide-react";
 import { useState } from "react";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { 
-  User, 
-  Bell, 
-  Key, 
-  Palette, 
-  ChevronLeft 
-} from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-
+import { ApiKeySettings } from "@/components/settings/ApiKeySettings";
+import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
 // Import settings components
 import { GeneralSettings } from "@/components/settings/GeneralSettings";
 import { NotificationSettings } from "@/components/settings/NotificationSettings";
-import { ApiKeySettings } from "@/components/settings/ApiKeySettings";
-import { AppearanceSettings } from "@/components/settings/AppearanceSettings";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function Settings() {
   const [activeTab, setActiveTab] = useState("general");
@@ -44,9 +26,7 @@ export function Settings() {
           </Link>
         </div>
         <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground mt-2">
-          Manage your account settings and preferences
-        </p>
+        <p className="text-muted-foreground mt-2">Manage your account settings and preferences</p>
       </div>
 
       {/* Settings Tabs */}
@@ -105,9 +85,7 @@ export function Settings() {
           <Card>
             <CardHeader>
               <CardTitle>API Keys</CardTitle>
-              <CardDescription>
-                Manage your API keys for programmatic access
-              </CardDescription>
+              <CardDescription>Manage your API keys for programmatic access</CardDescription>
             </CardHeader>
             <CardContent>
               <ApiKeySettings />
@@ -120,9 +98,7 @@ export function Settings() {
           <Card>
             <CardHeader>
               <CardTitle>Appearance</CardTitle>
-              <CardDescription>
-                Customize the look and feel of your workspace
-              </CardDescription>
+              <CardDescription>Customize the look and feel of your workspace</CardDescription>
             </CardHeader>
             <CardContent>
               <AppearanceSettings />

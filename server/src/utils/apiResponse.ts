@@ -1,12 +1,12 @@
-import type { Context } from "hono";
-import type { 
-  ApiSuccessResponse, 
-  ApiErrorResponse, 
-  PaginatedResponse,
+import type {
+  ApiErrorResponse,
+  ApiSuccessResponse,
   BatchOperationResponse,
-  ErrorCode 
+  ErrorCode,
+  PaginatedResponse,
 } from "@shared/types";
 import { ErrorCodes } from "@shared/types";
+import type { Context } from "hono";
 import { getRequestId } from "./requestContext";
 
 /**
@@ -22,7 +22,7 @@ export function apiSuccess<T>(
   options?: {
     status?: number;
     meta?: Record<string, any>;
-  }
+  },
 ): Response {
   const response: ApiSuccessResponse<T> = {
     success: true,
@@ -33,7 +33,7 @@ export function apiSuccess<T>(
       ...options?.meta,
     },
   };
-  
+
   return c.json(response, (options?.status || 200) as any);
 }
 
@@ -47,10 +47,10 @@ export function apiError(
     code: ErrorCode;
     message: string;
     details?: Record<string, any>;
-  }
+  },
 ): Response {
   const requestId = getRequestId(c);
-  
+
   const response: ApiErrorResponse = {
     success: false,
     error: {
@@ -63,7 +63,7 @@ export function apiError(
       requestId,
     },
   };
-  
+
   return c.json(response, options.status as any);
 }
 
@@ -81,10 +81,10 @@ export function apiPaginated<T>(
   options?: {
     status?: number;
     meta?: Record<string, any>;
-  }
+  },
 ): Response {
   const totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
-  
+
   const response: PaginatedResponse<T> = {
     success: true,
     data,
@@ -101,7 +101,7 @@ export function apiPaginated<T>(
       ...options?.meta,
     },
   };
-  
+
   return c.json(response, (options?.status || 200) as any);
 }
 
@@ -118,11 +118,11 @@ export function apiBatchResult<T>(
   }>,
   options?: {
     status?: number;
-  }
+  },
 ): Response {
-  const succeeded = results.filter(r => r.success).length;
-  const failed = results.filter(r => !r.success).length;
-  
+  const succeeded = results.filter((r) => r.success).length;
+  const failed = results.filter((r) => !r.success).length;
+
   const response: BatchOperationResponse<T> = {
     success: true,
     results,
@@ -132,7 +132,7 @@ export function apiBatchResult<T>(
       failed,
     },
   };
-  
+
   return c.json(response, (options?.status || 200) as any);
 }
 
@@ -146,21 +146,21 @@ export const apiErrors = {
       code: ErrorCodes.UNAUTHORIZED,
       message,
     }),
-    
+
   forbidden: (c: Context, message = "Access forbidden") =>
     apiError(c, {
       status: 403,
       code: ErrorCodes.FORBIDDEN,
       message,
     }),
-    
+
   notFound: (c: Context, resource = "Resource") =>
     apiError(c, {
       status: 404,
       code: ErrorCodes.NOT_FOUND,
       message: `${resource} not found`,
     }),
-    
+
   conflict: (c: Context, message: string, details?: Record<string, any>) =>
     apiError(c, {
       status: 409,
@@ -168,7 +168,7 @@ export const apiErrors = {
       message,
       details,
     }),
-    
+
   validationError: (c: Context, message: string, fields?: Record<string, string[]>) =>
     apiError(c, {
       status: 422,
@@ -176,14 +176,14 @@ export const apiErrors = {
       message,
       details: fields ? { fields } : undefined,
     }),
-    
+
   rateLimited: (c: Context, message = "Too many requests") =>
     apiError(c, {
       status: 429,
       code: ErrorCodes.RATE_LIMITED,
       message,
     }),
-    
+
   internal: (c: Context, message = "Internal server error") =>
     apiError(c, {
       status: 500,
@@ -202,11 +202,11 @@ export function parsePaginationParams(c: Context): {
   sortOrder?: "asc" | "desc";
 } {
   const query = c.req.query();
-  
+
   const page = Math.max(1, parseInt(query.page || "1", 10) || 1);
   const pageSize = Math.min(100, Math.max(1, parseInt(query.pageSize || "20", 10) || 20));
   const sortBy = query.sortBy;
   const sortOrder = query.sortOrder === "desc" ? "desc" : "asc";
-  
+
   return { page, pageSize, sortBy, sortOrder };
 }

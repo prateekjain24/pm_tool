@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { useUser, useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import type { UpdateGeneralSettingsInput } from "@shared/types";
+import { AlertCircle, Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Alert } from "@/components/ui/alert";
-import { AlertCircle, Check } from "lucide-react";
-import type { UpdateGeneralSettingsInput } from "@shared/types";
 import { useSettings } from "@/hooks/useSettings";
 
 export function GeneralSettings() {
@@ -19,7 +19,10 @@ export function GeneralSettings() {
     avatarUrl: null,
   });
   const [isSaving, setIsSaving] = useState(false);
-  const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [saveMessage, setSaveMessage] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   // Initialize form data when settings load from backend
   useEffect(() => {
@@ -63,7 +66,7 @@ export function GeneralSettings() {
         throw new Error("Failed to update settings");
       }
 
-      const result = await response.json();
+      const _result = await response.json();
       setSaveMessage({ type: "success", message: "Settings saved successfully!" });
     } catch (error) {
       console.error("Failed to save settings:", error);
@@ -74,7 +77,7 @@ export function GeneralSettings() {
   };
 
   const handleInputChange = (field: keyof UpdateGeneralSettingsInput, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   if (!isLoaded || isLoadingSettings) {
@@ -85,7 +88,9 @@ export function GeneralSettings() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Save message */}
       {saveMessage && (
-        <Alert className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}>
+        <Alert
+          className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}
+        >
           {saveMessage.type === "success" ? (
             <Check className="h-4 w-4 text-green-500" />
           ) : (
@@ -105,9 +110,7 @@ export function GeneralSettings() {
           disabled
           className="mt-1"
         />
-        <p className="text-sm text-muted-foreground mt-1">
-          Email cannot be changed here
-        </p>
+        <p className="text-sm text-muted-foreground mt-1">Email cannot be changed here</p>
       </div>
 
       {/* First Name */}
@@ -141,9 +144,9 @@ export function GeneralSettings() {
         <Label>Profile Picture</Label>
         <div className="flex items-center gap-4 mt-2">
           {user?.imageUrl && (
-            <img 
-              src={user.imageUrl} 
-              alt="Profile" 
+            <img
+              src={user.imageUrl}
+              alt="Profile"
               className="w-16 h-16 rounded-full object-cover"
             />
           )}

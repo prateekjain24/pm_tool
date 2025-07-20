@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm";
-import { users } from "./users";
-import { workspaces } from "./workspaces";
-import { hypotheses } from "./hypotheses";
-import { experiments } from "./experiments";
-import { hypothesisScores } from "./hypothesisScores";
 import { documents } from "./documents";
 import { documentVersions } from "./documentVersions";
+import { experiments } from "./experiments";
+import { hypotheses } from "./hypotheses";
+import { hypothesisScores } from "./hypothesisScores";
 import { userSettings } from "./userSettings";
+import { users } from "./users";
+import { workspaces } from "./workspaces";
 
 // Define relations between tables
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -105,15 +105,15 @@ export const userSettingsRelations = relations(userSettings, ({ one }) => ({
   }),
 }));
 
+export * from "./documents";
+export * from "./documentVersions";
+export * from "./experiments";
+export * from "./hypotheses";
+export * from "./hypothesisScores";
+export * from "./userSettings";
 // Export all schemas
 export * from "./users";
 export * from "./workspaces";
-export * from "./hypotheses";
-export * from "./experiments";
-export * from "./hypothesisScores";
-export * from "./documents";
-export * from "./documentVersions";
-export * from "./userSettings";
 
 // Export for migrations
 export const schema = {

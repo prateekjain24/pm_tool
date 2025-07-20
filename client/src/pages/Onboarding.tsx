@@ -1,8 +1,8 @@
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 
 export function Onboarding() {
   const { user } = useUser();
@@ -35,7 +35,7 @@ export function Onboarding() {
       if (workspaces.length === 0) {
         await createWorkspace(workspaceData);
       }
-      
+
       // TODO: Save preferences to backend
       navigate("/dashboard");
     } catch (err) {
@@ -49,9 +49,7 @@ export function Onboarding() {
       <div className="w-full max-w-2xl px-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Welcome to PM Tools, {user?.firstName}!</h1>
-          <p className="text-muted-foreground">
-            Let's get you set up in just a few quick steps
-          </p>
+          <p className="text-muted-foreground">Let's get you set up in just a few quick steps</p>
         </div>
 
         <div className="bg-background/60 backdrop-blur-sm border border-border rounded-lg p-8">
@@ -61,9 +59,7 @@ export function Onboarding() {
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className={`w-2 h-2 rounded-full ${
-                    i <= step ? "bg-primary" : "bg-muted"
-                  }`}
+                  className={`w-2 h-2 rounded-full ${i <= step ? "bg-primary" : "bg-muted"}`}
                 />
               ))}
             </div>
@@ -89,7 +85,7 @@ export function Onboarding() {
                     >
                       {role}
                     </button>
-                  )
+                  ),
                 )}
               </div>
             </div>
@@ -192,7 +188,7 @@ export function Onboarding() {
                   A workspace is where you and your team collaborate on experiments
                 </p>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <label htmlFor="workspace-name" className="block text-sm font-medium mb-2">
@@ -210,7 +206,7 @@ export function Onboarding() {
                     className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="workspace-desc" className="block text-sm font-medium mb-2">
                     Description (optional)
@@ -218,7 +214,9 @@ export function Onboarding() {
                   <textarea
                     id="workspace-desc"
                     value={workspaceData.description}
-                    onChange={(e) => setWorkspaceData({ ...workspaceData, description: e.target.value })}
+                    onChange={(e) =>
+                      setWorkspaceData({ ...workspaceData, description: e.target.value })
+                    }
                     placeholder="What does your team work on?"
                     rows={3}
                     className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"

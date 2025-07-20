@@ -1,4 +1,4 @@
-import { pgTable, timestamp, uuid, text, integer } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { documents } from "./documents";
 import { users } from "./users";
 
@@ -9,17 +9,19 @@ import { users } from "./users";
 export const documentVersions = pgTable("document_versions", {
   // Primary key
   id: uuid("id").defaultRandom().primaryKey(),
-  
+
   // Foreign keys
-  documentId: uuid("document_id").references(() => documents.id, {
-    onDelete: "cascade",
-  }).notNull(),
-  
+  documentId: uuid("document_id")
+    .references(() => documents.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+
   // Version information
   version: integer("version").notNull(),
   content: text("content").notNull(),
   changesSummary: text("changes_summary"),
-  
+
   // Creator
   createdBy: uuid("created_by").references(() => users.id, {
     onDelete: "set null",

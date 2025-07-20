@@ -1,20 +1,20 @@
-import { useState, type ReactNode } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
-import { 
-  BarChart3, 
-  FlaskConical, 
-  FileText, 
-  Settings, 
-  Menu,
-  X,
-  Home,
+import {
+  BarChart3,
   ChevronRight,
+  FileText,
+  FlaskConical,
+  Home,
+  Menu,
+  Settings,
+  Shield,
   Users,
-  Shield
+  X,
 } from "lucide-react";
-import { Header } from "./Header";
-import { cn } from "@/lib/utils";
+import { type ReactNode, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
+import { cn } from "@/lib/utils";
+import { Header } from "./Header";
 
 interface DashboardLayoutProps {
   children?: ReactNode;
@@ -84,7 +84,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   // Filter navigation items based on user role and permissions
-  const filteredNavItems = navItems.filter(item => {
+  const filteredNavItems = navItems.filter((item) => {
     if (item.requiredRole && !hasRole(item.requiredRole)) {
       return false;
     }
@@ -99,8 +99,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Mobile sidebar backdrop */}
       {isSidebarOpen && (
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Close sidebar"
           className="fixed inset-0 z-30 bg-background/80 backdrop-blur-sm lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsSidebarOpen(false);
+            }
+          }}
         />
       )}
 
@@ -110,7 +118,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           "fixed left-0 top-0 z-40 h-full w-64 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
           "border-r border-border transition-transform duration-300 ease-in-out",
           "lg:translate-x-0 lg:static lg:z-0",
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-full flex-col">
@@ -118,6 +126,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex h-16 items-center justify-between px-6 border-b border-border lg:hidden">
             <span className="text-lg font-semibold">Menu</span>
             <button
+              type="button"
               onClick={toggleSidebar}
               className="p-2 hover:bg-accent rounded-lg transition-colors"
             >
@@ -128,9 +137,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           {/* Navigation */}
           <nav className="flex-1 space-y-1 p-4">
             {filteredNavItems.map((item) => {
-              const isActive = location.pathname === item.href || 
+              const isActive =
+                location.pathname === item.href ||
                 (item.href !== "/dashboard" && location.pathname.startsWith(item.href));
-              
+
               return (
                 <Link
                   key={item.href}
@@ -139,7 +149,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
                     "hover:bg-accent hover:text-accent-foreground",
-                    isActive && "bg-accent text-accent-foreground font-medium"
+                    isActive && "bg-accent text-accent-foreground font-medium",
                   )}
                 >
                   <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -181,6 +191,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <Header />
           {/* Mobile menu button */}
           <button
+            type="button"
             onClick={toggleSidebar}
             className="fixed top-4 left-4 z-30 p-2 bg-background/80 backdrop-blur-sm border border-border rounded-lg hover:bg-accent transition-colors lg:hidden"
           >
@@ -190,9 +201,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
         {/* Page content */}
         <main className="flex-1 overflow-auto">
-          <div className="h-full">
-            {children || <Outlet />}
-          </div>
+          <div className="h-full">{children || <Outlet />}</div>
         </main>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "../db";
-import { users, type User, type NewUser } from "../db/schema";
+import { type NewUser, type User, users } from "../db/schema";
 
 /**
  * Check if a user exists by Clerk ID
@@ -12,7 +12,7 @@ export async function userExistsByClerkId(clerkId: string): Promise<boolean> {
     .from(users)
     .where(eq(users.clerkId, clerkId))
     .limit(1);
-  
+
   return result.length > 0;
 }
 
@@ -21,16 +21,12 @@ export async function userExistsByClerkId(clerkId: string): Promise<boolean> {
  */
 export async function getUserByClerkId(clerkId: string): Promise<User | null> {
   const db = getDb();
-  const result = await db
-    .select()
-    .from(users)
-    .where(eq(users.clerkId, clerkId))
-    .limit(1);
-  
+  const result = await db.select().from(users).where(eq(users.clerkId, clerkId)).limit(1);
+
   if (result.length === 0) {
     return null;
   }
-  
+
   return result[0];
 }
 
@@ -45,7 +41,7 @@ export async function createUser(userData: {
   workspaceId?: string | null;
 }): Promise<User> {
   const db = getDb();
-  
+
   const newUser: NewUser = {
     clerkId: userData.clerkId,
     email: userData.email,
@@ -54,12 +50,9 @@ export async function createUser(userData: {
     workspaceId: userData.workspaceId,
     role: "member",
   };
-  
-  const [inserted] = await db
-    .insert(users)
-    .values(newUser)
-    .returning();
-  
+
+  const [inserted] = await db.insert(users).values(newUser).returning();
+
   return inserted;
 }
 
@@ -77,7 +70,7 @@ export async function getOrCreateUser(userData: {
   if (existingUser) {
     return existingUser;
   }
-  
+
   // Create new user
   return createUser(userData);
 }
@@ -93,10 +86,10 @@ export async function updateUser(
     lastName: string | null;
     workspaceId: string | null;
     role: string;
-  }>
+  }>,
 ): Promise<User | null> {
   const db = getDb();
-  
+
   const [updated] = await db
     .update(users)
     .set({
@@ -105,6 +98,6 @@ export async function updateUser(
     })
     .where(eq(users.clerkId, clerkId))
     .returning();
-  
+
   return updated || null;
 }

@@ -23,7 +23,7 @@ export function Profile() {
 
       {/* Clerk UserProfile component */}
       <div className="max-w-4xl mx-auto px-6 py-8">
-        <UserProfile 
+        <UserProfile
           appearance={{
             elements: {
               rootBox: "w-full",

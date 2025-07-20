@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
-import { env } from "./env";
 import { getLogger } from "../utils/logger";
+import { env } from "./env";
 
 const logger = getLogger("sentry");
 
@@ -24,20 +24,20 @@ export function initSentry() {
         // Note: Sentry SDK v7+ has these integrations enabled by default
         // HTTP tracking, console capture, and context lines are automatic
       ],
-      beforeSend: (event, hint) => {
+      beforeSend: (event, _hint) => {
         // Filter out certain errors in production
         if (env.NODE_ENV === "production") {
           // Don't send 404 errors
           if (event.exception?.values?.[0]?.value?.includes("404")) {
             return null;
           }
-          
+
           // Don't send validation errors
           if (event.exception?.values?.[0]?.type === "ZodError") {
             return null;
           }
         }
-        
+
         return event;
       },
       beforeBreadcrumb: (breadcrumb) => {
@@ -45,17 +45,17 @@ export function initSentry() {
         if (breadcrumb.category === "console" && breadcrumb.level === "debug") {
           return null;
         }
-        
+
         // Sanitize data
         if (breadcrumb.data) {
           const sensitiveKeys = ["password", "token", "secret", "api_key"];
           sensitiveKeys.forEach((key) => {
-            if (breadcrumb.data && breadcrumb.data[key]) {
+            if (breadcrumb.data?.[key]) {
               breadcrumb.data[key] = "[REDACTED]";
             }
           });
         }
-        
+
         return breadcrumb;
       },
     });
@@ -74,8 +74,8 @@ export function captureException(
   context?: {
     user?: { id: string; email?: string };
     tags?: Record<string, string>;
-    extra?: Record<string, any>;
-  }
+    extra?: Record<string, unknown>;
+  },
 ) {
   if (!env.SENTRY_DSN) {
     return;
@@ -111,7 +111,7 @@ export function captureException(
 export function captureMessage(
   message: string,
   level: Sentry.SeverityLevel = "info",
-  context?: Record<string, any>
+  context?: Record<string, unknown>,
 ) {
   if (!env.SENTRY_DSN) {
     return;
@@ -135,7 +135,7 @@ export function addBreadcrumb(breadcrumb: {
   message: string;
   category?: string;
   level?: Sentry.SeverityLevel;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
 }) {
   if (!env.SENTRY_DSN) {
     return;

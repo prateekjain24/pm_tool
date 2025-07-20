@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
+import type { ThemePreference } from "@shared/types";
+import { AlertCircle, Check, Monitor, Moon, Sun } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Alert } from "@/components/ui/alert";
-import { Check, AlertCircle, Monitor, Moon, Sun } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { ThemePreference } from "@shared/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useSettings } from "@/hooks/useSettings";
 
 export function AppearanceSettings() {
@@ -14,7 +20,23 @@ export function AppearanceSettings() {
   const { settings, isLoading: isLoadingSettings } = useSettings();
   const [theme, setTheme] = useState<ThemePreference>("system");
   const [isSaving, setIsSaving] = useState(false);
-  const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [saveMessage, setSaveMessage] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  const applyTheme = useCallback((newTheme: ThemePreference) => {
+    const root = document.documentElement;
+
+    if (newTheme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+      root.classList.toggle("dark", systemTheme === "dark");
+    } else {
+      root.classList.toggle("dark", newTheme === "dark");
+    }
+  }, []);
 
   // Load saved theme preference from backend first, then localStorage as fallback
   useEffect(() => {
@@ -34,18 +56,7 @@ export function AppearanceSettings() {
         applyTheme("system");
       }
     }
-  }, [settings, isLoadingSettings]);
-
-  const applyTheme = (newTheme: ThemePreference) => {
-    const root = document.documentElement;
-    
-    if (newTheme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.classList.toggle("dark", systemTheme === "dark");
-    } else {
-      root.classList.toggle("dark", newTheme === "dark");
-    }
-  };
+  }, [settings, isLoadingSettings, applyTheme]);
 
   const handleThemeChange = (newTheme: ThemePreference) => {
     setTheme(newTheme);
@@ -114,7 +125,9 @@ export function AppearanceSettings() {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Save message */}
       {saveMessage && (
-        <Alert className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}>
+        <Alert
+          className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}
+        >
           {saveMessage.type === "success" ? (
             <Check className="h-4 w-4 text-green-500" />
           ) : (
@@ -162,9 +175,7 @@ export function AppearanceSettings() {
                 <option.icon className="h-8 w-8" />
                 <div className="text-center">
                   <p className="font-medium">{option.label}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {option.description}
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
                 </div>
               </div>
               {theme === option.value && (

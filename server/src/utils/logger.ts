@@ -26,8 +26,8 @@ const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
  */
 const LOG_LEVEL_COLORS: Record<LogLevel, string> = {
   [LogLevel.DEBUG]: "\x1b[90m", // Gray
-  [LogLevel.INFO]: "\x1b[36m",  // Cyan
-  [LogLevel.WARN]: "\x1b[33m",  // Yellow
+  [LogLevel.INFO]: "\x1b[36m", // Cyan
+  [LogLevel.WARN]: "\x1b[33m", // Yellow
   [LogLevel.ERROR]: "\x1b[31m", // Red
 };
 
@@ -39,12 +39,12 @@ const RESET_COLOR = "\x1b[0m";
 function getCurrentLogLevel(): LogLevel {
   if (isTest) return LogLevel.ERROR;
   if (isDevelopment) return LogLevel.DEBUG;
-  
+
   const envLevel = process.env.LOG_LEVEL?.toUpperCase();
   if (envLevel && envLevel in LogLevel) {
     return LogLevel[envLevel as keyof typeof LogLevel];
   }
-  
+
   return LogLevel.INFO;
 }
 
@@ -67,11 +67,11 @@ function formatLogData(data: any): string {
   if (typeof data === "string") {
     return data;
   }
-  
+
   if (data instanceof Error) {
     return isDevelopment && data.stack ? data.stack : data.message;
   }
-  
+
   try {
     return JSON.stringify(data, null, isDevelopment ? 2 : 0);
   } catch {
@@ -87,14 +87,14 @@ export function getLogger(namespace: string): Logger {
     if (level < currentLogLevel) {
       return;
     }
-    
+
     const timestamp = new Date().toISOString();
     const levelName = LOG_LEVEL_NAMES[level];
     const color = LOG_LEVEL_COLORS[level];
-    
+
     // Format the log entry
     const prefix = `${color}[${timestamp}] [${levelName}] [${namespace}]${RESET_COLOR}`;
-    
+
     // Console output
     if (message) {
       console.log(`${prefix} ${message}`);
@@ -104,17 +104,18 @@ export function getLogger(namespace: string): Logger {
     } else {
       console.log(`${prefix} ${formatLogData(data)}`);
     }
-    
+
     // File output in production
     if (!isDevelopment && !isTest) {
       const logMessage = message || formatLogData(data);
       const logData = message ? data : undefined;
-      
-      writeToFileLog(levelName, `[${namespace}] ${logMessage}`, logData)
-        .catch(err => console.error("Failed to write to log file:", err));
+
+      writeToFileLog(levelName, `[${namespace}] ${logMessage}`, logData).catch((err) =>
+        console.error("Failed to write to log file:", err),
+      );
     }
   };
-  
+
   return {
     debug: (data: any, message?: string) => log(LogLevel.DEBUG, data, message),
     info: (data: any, message?: string) => log(LogLevel.INFO, data, message),

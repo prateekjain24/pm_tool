@@ -1,6 +1,5 @@
-import type { Context, Next } from "hono";
 import type { ApiSuccessResponse, PaginatedResponse } from "@shared/types";
-import { getRequestId } from "../utils/requestContext";
+import type { Context, Next } from "hono";
 
 /**
  * Response formatter middleware
@@ -8,20 +7,20 @@ import { getRequestId } from "../utils/requestContext";
  */
 export async function responseFormatter(c: Context, next: Next) {
   await next();
-  
+
   // Only format successful JSON responses
   if (c.res.status >= 200 && c.res.status < 300) {
     const contentType = c.res.headers.get("content-type");
-    
+
     if (contentType?.includes("application/json")) {
       // Get the original response body
-      const body = await c.res.json() as any;
-      
+      const body = (await c.res.json()) as any;
+
       // If it's already formatted correctly, skip
       if (body && typeof body === "object" && "success" in body) {
         return;
       }
-      
+
       // Check if it's a paginated response
       if (isPaginatedData(body)) {
         const formatted: PaginatedResponse<any> = {
@@ -32,10 +31,10 @@ export async function responseFormatter(c: Context, next: Next) {
             timestamp: new Date().toISOString(),
           },
         };
-        
+
         return c.json(formatted, c.res.status as any);
       }
-      
+
       // Format as standard success response
       const formatted: ApiSuccessResponse<any> = {
         success: true,
@@ -45,7 +44,7 @@ export async function responseFormatter(c: Context, next: Next) {
           version: "1.0.0", // Could be dynamic based on env
         },
       };
-      
+
       return c.json(formatted, c.res.status as any);
     }
   }
@@ -54,11 +53,7 @@ export async function responseFormatter(c: Context, next: Next) {
 /**
  * Helper to create a success response
  */
-export function success<T>(
-  c: Context,
-  data: T,
-  status = 200
-): Response {
+export function success<T>(c: Context, data: T, status = 200): Response {
   const response: ApiSuccessResponse<T> = {
     success: true,
     data,
@@ -67,7 +62,7 @@ export function success<T>(
       version: "1.0.0",
     },
   };
-  
+
   return c.json(response, status as any);
 }
 
@@ -82,10 +77,10 @@ export function paginated<T>(
     pageSize: number;
     totalItems: number;
   },
-  status = 200
+  status = 200,
 ): Response {
   const totalPages = Math.ceil(pagination.totalItems / pagination.pageSize);
-  
+
   const response: PaginatedResponse<T> = {
     success: true,
     data,
@@ -99,7 +94,7 @@ export function paginated<T>(
       timestamp: new Date().toISOString(),
     },
   };
-  
+
   return c.json(response, status as any);
 }
 

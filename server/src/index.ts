@@ -4,28 +4,24 @@ import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import { timing } from "hono/timing";
 import { z } from "zod";
-
+// Import config and database
+import { env } from "./config/env";
+import { initSentry } from "./config/sentry";
+import { connectDb, dbHealthCheck, getDbMetrics } from "./db";
+// import { responseFormatter } from "./middleware/responseFormatter"; // Disabled due to stream locking issue
+import { authMiddleware, optionalAuthMiddleware } from "./middleware/auth";
 // Import middleware
 import { errorHandler } from "./middleware/errorHandler";
 import { loggingMiddleware, performanceMiddleware } from "./middleware/logger";
-// import { responseFormatter } from "./middleware/responseFormatter"; // Disabled due to stream locking issue
-import { authMiddleware, optionalAuthMiddleware } from "./middleware/auth";
-import { validateBody, validateQuery, getValidated } from "./middleware/validation";
-
-// Import utilities
-import { apiSuccess, apiPaginated, parsePaginationParams } from "./utils/apiResponse";
-import { getUser, requireUser } from "./utils/auth";
-import { logger } from "./utils/logger";
-
+import { getValidated, validateBody, validateQuery } from "./middleware/validation";
+import { settingsRouter } from "./routes/settings";
 // Import routes
 import { workspaceRouter } from "./routes/workspaces";
-import { settingsRouter } from "./routes/settings";
-
-// Import config and database
-import { env } from "./config/env";
-import { connectDb, dbHealthCheck, getDbMetrics } from "./db";
-import { initSentry } from "./config/sentry";
-import { initializeFileLogging, closeFileLogger } from "./utils/logRotation";
+// Import utilities
+import { apiPaginated, apiSuccess, parsePaginationParams } from "./utils/apiResponse";
+import { getUser, requireUser } from "./utils/auth";
+import { logger } from "./utils/logger";
+import { closeFileLogger, initializeFileLogging } from "./utils/logRotation";
 
 // Initialize Sentry before anything else
 initSentry();
@@ -174,60 +170,50 @@ const hypothesisQuerySchema = z.object({
 });
 
 // Create hypothesis - with validation
-app.post(
-  "/api/hypothesis",
-  authMiddleware,
-  validateBody(createHypothesisSchema),
-  async (c) => {
-    const user = requireUser(c);
-    const data = getValidated<z.infer<typeof createHypothesisSchema>>(c, "json");
+app.post("/api/hypothesis", authMiddleware, validateBody(createHypothesisSchema), async (c) => {
+  const user = requireUser(c);
+  const data = getValidated<z.infer<typeof createHypothesisSchema>>(c, "json");
 
-    // TODO: Implement hypothesis creation logic
-    logger.info({ userId: user.id, hypothesis: data }, "Creating new hypothesis");
+  // TODO: Implement hypothesis creation logic
+  logger.info({ userId: user.id, hypothesis: data }, "Creating new hypothesis");
 
-    return apiSuccess(
-      c,
-      {
-        id: "hyp_" + Date.now(),
-        ...data,
-        userId: user.id,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      { status: 201 }
-    );
-  }
-);
-
-// List hypotheses - with pagination
-app.get(
-  "/api/hypotheses",
-  authMiddleware,
-  validateQuery(hypothesisQuerySchema),
-  async (c) => {
-    const user = requireUser(c);
-    const pagination = parsePaginationParams(c);
-
-    // TODO: Implement hypothesis listing logic
-    const mockData = Array.from({ length: 5 }, (_, i) => ({
-      id: `hyp_${i + 1}`,
-      title: `Hypothesis ${i + 1}`,
-      description: `Description for hypothesis ${i + 1}`,
-      metric: "conversion_rate",
-      expectedImpact: 10 + i * 5,
-      confidence: 70 + i * 2,
+  return apiSuccess(
+    c,
+    {
+      id: `hyp_${Date.now()}`,
+      ...data,
       userId: user.id,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    }));
+    },
+    { status: 201 },
+  );
+});
 
-    return apiPaginated(c, mockData, {
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-      totalItems: 50, // Mock total
-    });
-  }
-);
+// List hypotheses - with pagination
+app.get("/api/hypotheses", authMiddleware, validateQuery(hypothesisQuerySchema), async (c) => {
+  const user = requireUser(c);
+  const pagination = parsePaginationParams(c);
+
+  // TODO: Implement hypothesis listing logic
+  const mockData = Array.from({ length: 5 }, (_, i) => ({
+    id: `hyp_${i + 1}`,
+    title: `Hypothesis ${i + 1}`,
+    description: `Description for hypothesis ${i + 1}`,
+    metric: "conversion_rate",
+    expectedImpact: 10 + i * 5,
+    confidence: 70 + i * 2,
+    userId: user.id,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
+
+  return apiPaginated(c, mockData, {
+    page: pagination.page,
+    pageSize: pagination.pageSize,
+    totalItems: 50, // Mock total
+  });
+});
 
 /**
  * 404 handler
@@ -244,7 +230,7 @@ app.notFound((c) => {
         timestamp: new Date().toISOString(),
       },
     },
-    { status: 404 }
+    { status: 404 },
   );
 });
 
@@ -258,10 +244,10 @@ const gracefulShutdown = async () => {
     // Close database connection
     const { disconnectDb } = await import("./db");
     await disconnectDb();
-    
+
     // Close file logger
     await closeFileLogger();
-    
+
     logger.info("All connections closed successfully");
     process.exit(0);
   } catch (error) {
@@ -281,7 +267,7 @@ logger.info(
     environment: env.NODE_ENV,
     clientUrl: env.CLIENT_URL,
   },
-  "PM Tools API starting..."
+  "PM Tools API starting...",
 );
 
 export default {

@@ -11,7 +11,10 @@ export function Header() {
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo - hidden on dashboard pages */}
-          <Link to={isSignedIn ? "/dashboard" : "/"} className="hover:opacity-80 transition-opacity lg:hidden">
+          <Link
+            to={isSignedIn ? "/dashboard" : "/"}
+            className="hover:opacity-80 transition-opacity lg:hidden"
+          >
             <Logo size="md" showText animated />
           </Link>
           <div className="hidden lg:block" />

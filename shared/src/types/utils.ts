@@ -100,23 +100,31 @@ export interface SortConfig<T> {
 /**
  * Filter operators
  */
-export type FilterOperator = "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "nin" | "like" | "between";
+export type FilterOperator =
+  | "eq"
+  | "neq"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "in"
+  | "nin"
+  | "like"
+  | "between";
 
 /**
  * Filter configuration
  */
-export interface FilterConfig<T> {
-  field: keyof T;
+export interface FilterConfig<T, K extends keyof T = keyof T> {
+  field: K;
   operator: FilterOperator;
-  value: any;
+  value: T[K] | T[K][] | [T[K], T[K]];
 }
 
 /**
  * Result type for operations that can fail
  */
-export type Result<T, E = Error> = 
-  | { success: true; data: T }
-  | { success: false; error: E };
+export type Result<T, E = Error> = { success: true; data: T } | { success: false; error: E };
 
 /**
  * Async result type
@@ -179,7 +187,6 @@ export type ArrayElement<T> = T extends readonly (infer E)[] ? E : never;
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
-
 
 /**
  * Type for React component props with className

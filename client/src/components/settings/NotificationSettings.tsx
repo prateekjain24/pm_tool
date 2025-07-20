@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Alert } from "@/components/ui/alert";
-import { Check, AlertCircle } from "lucide-react";
 import type { NotificationPreferences } from "@shared/types";
+import { AlertCircle, Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Switch } from "@/components/ui/switch";
 import { useSettings } from "@/hooks/useSettings";
 
 // Default notification preferences
@@ -29,7 +29,10 @@ export function NotificationSettings() {
   const { settings, isLoading: isLoadingSettings } = useSettings();
   const [preferences, setPreferences] = useState<NotificationPreferences>(defaultPreferences);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [saveMessage, setSaveMessage] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   // Initialize preferences when settings load from backend
   useEffect(() => {
@@ -41,9 +44,9 @@ export function NotificationSettings() {
   const handleToggle = (
     category: keyof NotificationPreferences,
     setting: string,
-    value: boolean
+    value: boolean,
   ) => {
-    setPreferences(prev => ({
+    setPreferences((prev) => ({
       ...prev,
       [category]: {
         ...prev[category],
@@ -59,20 +62,23 @@ export function NotificationSettings() {
 
     try {
       const token = await getToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/settings/notifications`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/settings/notifications`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(preferences),
         },
-        body: JSON.stringify(preferences),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update notification preferences");
       }
 
-      const result = await response.json();
+      const _result = await response.json();
       setSaveMessage({ type: "success", message: "Notification preferences saved!" });
     } catch (error) {
       console.error("Failed to save preferences:", error);
@@ -90,7 +96,9 @@ export function NotificationSettings() {
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Save message */}
       {saveMessage && (
-        <Alert className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}>
+        <Alert
+          className={`flex items-center gap-2 ${saveMessage.type === "success" ? "border-green-500" : ""}`}
+        >
           {saveMessage.type === "success" ? (
             <Check className="h-4 w-4 text-green-500" />
           ) : (

@@ -10,7 +10,7 @@ export const HypothesisStatus = {
   APPROVED: "approved",
 } as const;
 
-export type HypothesisStatus = typeof HypothesisStatus[keyof typeof HypothesisStatus];
+export type HypothesisStatus = (typeof HypothesisStatus)[keyof typeof HypothesisStatus];
 
 /**
  * Base hypothesis schema
@@ -24,7 +24,12 @@ export const hypothesisSchema = z.object({
   expectedOutcome: z.string().min(10, "Expected outcome must be at least 10 characters"),
   reasoning: z.string().min(20, "Reasoning must be at least 20 characters"),
   successMetrics: z.array(z.string()).min(1, "At least one success metric is required"),
-  status: z.enum([HypothesisStatus.DRAFT, HypothesisStatus.ANALYZING, HypothesisStatus.SCORED, HypothesisStatus.APPROVED]),
+  status: z.enum([
+    HypothesisStatus.DRAFT,
+    HypothesisStatus.ANALYZING,
+    HypothesisStatus.SCORED,
+    HypothesisStatus.APPROVED,
+  ]),
   version: z.number().int().positive(),
   createdAt: z.date(),
   updatedAt: z.date(),
@@ -72,7 +77,14 @@ export const createHypothesisInputSchema = z.object({
  * Update hypothesis input schema
  */
 export const updateHypothesisInputSchema = createHypothesisInputSchema.partial().extend({
-  status: z.enum([HypothesisStatus.DRAFT, HypothesisStatus.ANALYZING, HypothesisStatus.SCORED, HypothesisStatus.APPROVED]).optional(),
+  status: z
+    .enum([
+      HypothesisStatus.DRAFT,
+      HypothesisStatus.ANALYZING,
+      HypothesisStatus.SCORED,
+      HypothesisStatus.APPROVED,
+    ])
+    .optional(),
 });
 
 /**

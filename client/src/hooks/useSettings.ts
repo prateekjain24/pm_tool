@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import type { UserSettings } from "@shared/types";
+import { useCallback, useEffect, useState } from "react";
 
 interface UseSettingsReturn {
   settings: UserSettings | null;
@@ -15,11 +15,11 @@ export function useSettings(): UseSettingsReturn {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const token = await getToken();
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/settings`, {
         headers: {
@@ -39,11 +39,11 @@ export function useSettings(): UseSettingsReturn {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getToken]);
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [fetchSettings]);
 
   return {
     settings,

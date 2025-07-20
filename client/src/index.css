@@ -77,13 +77,13 @@
   --sidebar-accent-foreground: oklch(0.15 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  
+
   /* Custom badge text colors - much darker for better contrast */
   --badge-green: oklch(0.3 0.15 150);
   --badge-blue: oklch(0.3 0.2 260);
   --badge-purple: oklch(0.3 0.2 300);
   --badge-emerald: oklch(0.3 0.15 160);
-  
+
   /* Custom gradient colors for text */
   --gradient-dark: oklch(0.05 0 0);
   --gradient-medium: oklch(0.25 0 0);
@@ -277,22 +277,28 @@
 }
 
 @keyframes fadeInPulse {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }
 
 @keyframes slideInArrow {
-  0% { 
-    opacity: 0; 
+  0% {
+    opacity: 0;
     transform: translateX(-10px);
   }
-  50% { 
-    opacity: 1; 
+  50% {
+    opacity: 1;
     transform: translateX(0);
   }
-  100% { 
-    opacity: 0; 
+  100% {
+    opacity: 0;
     transform: translateX(10px);
   }
 }
@@ -306,13 +312,23 @@
 }
 
 @keyframes logoGlow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 @keyframes arrowPulse {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(2px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
 }
 
 .animate-logo-glow {

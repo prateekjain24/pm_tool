@@ -1,6 +1,6 @@
 import { useUser as useClerkUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
 import type { User } from "@shared/types";
+import { useEffect, useState } from "react";
 
 interface UseUserReturn {
   user: User | null;
@@ -40,8 +40,8 @@ export function useUser(): UseUserReturn {
         lastName: clerkUser.lastName,
         role,
         workspaceId: undefined, // This would come from workspace context
-        createdAt: new Date(clerkUser.createdAt!),
-        updatedAt: new Date(clerkUser.updatedAt!),
+        createdAt: clerkUser.createdAt ? new Date(clerkUser.createdAt) : new Date(),
+        updatedAt: clerkUser.updatedAt ? new Date(clerkUser.updatedAt) : new Date(),
       };
 
       setUser(userData);

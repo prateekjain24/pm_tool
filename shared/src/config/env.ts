@@ -13,26 +13,29 @@ const baseEnvSchema = z.object({
 export const serverEnvSchema = baseEnvSchema.extend({
   // Database
   DATABASE_URL: z.string().url().describe("PostgreSQL connection string"),
-  
+
   // Redis
   REDIS_URL: z.string().url().default("redis://localhost:6379").describe("Redis connection string"),
-  
+
   // Server
   PORT: z.coerce.number().default(3000).describe("Server port"),
   CLIENT_URL: z.string().url().default("http://localhost:5173").describe("Client URL for CORS"),
-  
+
   // Clerk Auth
   CLERK_SECRET_KEY: z.string().startsWith("sk_").describe("Clerk secret key for backend"),
   CLERK_PUBLISHABLE_KEY: z.string().startsWith("pk_").describe("Clerk publishable key"),
-  
+
   // AI Services
   OPENAI_API_KEY: z.string().startsWith("sk-").describe("OpenAI API key"),
   ANTHROPIC_API_KEY: z.string().startsWith("sk-ant-").describe("Anthropic API key"),
   GOOGLE_AI_API_KEY: z.string().describe("Google AI API key"),
-  
+
   // Error Tracking
   SENTRY_DSN: z.string().url().optional().describe("Sentry DSN for error tracking"),
-  APP_VERSION: z.string().default("1.0.0").describe("Application version for Sentry release tracking"),
+  APP_VERSION: z
+    .string()
+    .default("1.0.0")
+    .describe("Application version for Sentry release tracking"),
 });
 
 /**
@@ -40,11 +43,14 @@ export const serverEnvSchema = baseEnvSchema.extend({
  */
 export const clientEnvSchema = baseEnvSchema.extend({
   // Clerk Auth
-  VITE_CLERK_PUBLISHABLE_KEY: z.string().startsWith("pk_").describe("Clerk publishable key for frontend"),
-  
+  VITE_CLERK_PUBLISHABLE_KEY: z
+    .string()
+    .startsWith("pk_")
+    .describe("Clerk publishable key for frontend"),
+
   // API URL
   VITE_API_URL: z.string().url().default("http://localhost:3000").describe("Backend API URL"),
-  
+
   // Error Tracking
   VITE_SENTRY_DSN: z.string().url().optional().describe("Sentry DSN for client error tracking"),
   VITE_APP_VERSION: z.string().default("1.0.0").describe("Application version for Sentry"),
@@ -79,7 +85,9 @@ export function parseServerEnv(env: Record<string, string | undefined> = process
 /**
  * Parse and validate client environment variables
  */
-export function parseClientEnv(env: Record<string, string | undefined> = import.meta.env): ClientEnv {
+export function parseClientEnv(
+  env: Record<string, string | undefined> = import.meta.env,
+): ClientEnv {
   try {
     return clientEnvSchema.parse(env);
   } catch (error) {
@@ -98,12 +106,12 @@ export function parseClientEnv(env: Record<string, string | undefined> = import.
 export function formatEnvErrors(error: z.ZodError): string {
   const errors = error.flatten().fieldErrors;
   const errorMessages: string[] = [];
-  
+
   for (const [field, messages] of Object.entries(errors)) {
     if (Array.isArray(messages) && messages.length > 0) {
       errorMessages.push(`  ${field}: ${messages.join(", ")}`);
     }
   }
-  
+
   return errorMessages.join("\n");
 }

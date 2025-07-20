@@ -28,44 +28,43 @@ async function reset() {
   console.log("3. Run all migrations");
   console.log("4. Run seed data (optional)");
   console.log("\n⚠️  ALL DATA WILL BE LOST! ⚠️\n");
-  
+
   const response = await askQuestion("Are you sure you want to continue? (yes/no): ");
-  
+
   if (response.toLowerCase() !== "yes") {
     console.log("❌ Reset cancelled");
     rl.close();
     return;
   }
-  
+
   console.log("\n🔄 Starting database reset...");
-  
+
   try {
     // Drop database (ignore error if it doesn't exist)
     console.log("📦 Dropping database...");
     try {
-      execSync("/opt/homebrew/opt/postgresql@16/bin/dropdb pm_tools_dev", { stdio: 'inherit' });
-    } catch (error) {
+      execSync("/opt/homebrew/opt/postgresql@16/bin/dropdb pm_tools_dev", { stdio: "inherit" });
+    } catch (_error) {
       console.log("ℹ️  Database doesn't exist, continuing...");
     }
-    
+
     // Create database
     console.log("📦 Creating database...");
-    execSync("/opt/homebrew/opt/postgresql@16/bin/createdb pm_tools_dev", { stdio: 'inherit' });
-    
+    execSync("/opt/homebrew/opt/postgresql@16/bin/createdb pm_tools_dev", { stdio: "inherit" });
+
     // Run migrations
     console.log("🚀 Running migrations...");
-    execSync("bun run db:migrate", { stdio: 'inherit' });
-    
+    execSync("bun run db:migrate", { stdio: "inherit" });
+
     // Ask about seeding
     const seedResponse = await askQuestion("\nDo you want to run seed data? (yes/no): ");
-    
+
     if (seedResponse.toLowerCase() === "yes") {
       console.log("🌱 Running seed data...");
-      execSync("bun run db:seed", { stdio: 'inherit' });
+      execSync("bun run db:seed", { stdio: "inherit" });
     }
-    
+
     console.log("\n✅ Database reset completed successfully!");
-    
   } catch (error) {
     console.error("\n❌ Reset failed:", error);
     process.exit(1);

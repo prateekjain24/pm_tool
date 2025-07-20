@@ -17,7 +17,7 @@ export interface Experiment {
   confidenceLevel: number;
   statisticalPower: number;
   variants: Variant[];
-  status: 'planning' | 'running' | 'completed' | 'cancelled';
+  status: "planning" | "running" | "completed" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,7 +36,7 @@ export interface CreateExperimentInput {
 }
 
 export interface UpdateExperimentInput extends Partial<CreateExperimentInput> {
-  status?: 'planning' | 'running' | 'completed' | 'cancelled';
+  status?: "planning" | "running" | "completed" | "cancelled";
 }
 
 export interface SampleSizeCalculation {

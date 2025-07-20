@@ -7,7 +7,7 @@ export interface Hypothesis {
   expectedOutcome: string;
   reasoning: string;
   successMetrics: string[];
-  status: 'draft' | 'analyzing' | 'scored' | 'approved';
+  status: "draft" | "analyzing" | "scored" | "approved";
   version: number;
   createdAt: Date;
   updatedAt: Date;
@@ -41,7 +41,7 @@ export interface CreateHypothesisInput {
 }
 
 export interface UpdateHypothesisInput extends Partial<CreateHypothesisInput> {
-  status?: 'draft' | 'analyzing' | 'scored' | 'approved';
+  status?: "draft" | "analyzing" | "scored" | "approved";
 }
 
 export interface ScoreHypothesisInput {

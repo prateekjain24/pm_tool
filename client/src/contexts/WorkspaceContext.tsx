@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import type { Workspace, WorkspaceWithMembers } from "@shared/types";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
 
 interface WorkspaceContextType {
   workspaces: Workspace[];
@@ -21,14 +21,44 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch workspace details
+  const fetchWorkspaceDetails = useCallback(
+    async (workspaceId: string) => {
+      try {
+        const token = await getToken();
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/workspaces/${workspaceId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch workspace details");
+        }
+
+        const result = await response.json();
+        setCurrentWorkspace(result.data);
+
+        // Store current workspace ID in localStorage
+        localStorage.setItem("currentWorkspaceId", workspaceId);
+      } catch (err) {
+        console.error("Error fetching workspace details:", err);
+      }
+    },
+    [getToken],
+  );
+
   // Fetch workspaces
-  const fetchWorkspaces = async () => {
+  const fetchWorkspaces = useCallback(async () => {
     if (!isSignedIn) return;
-    
+
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const token = await getToken();
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/workspaces`, {
         headers: {
@@ -54,59 +84,38 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // Fetch workspace details
-  const fetchWorkspaceDetails = async (workspaceId: string) => {
-    try {
-      const token = await getToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/workspaces/${workspaceId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch workspace details");
-      }
-
-      const result = await response.json();
-      setCurrentWorkspace(result.data);
-      
-      // Store current workspace ID in localStorage
-      localStorage.setItem("currentWorkspaceId", workspaceId);
-    } catch (err) {
-      console.error("Error fetching workspace details:", err);
-    }
-  };
+  }, [isSignedIn, getToken, currentWorkspace, fetchWorkspaceDetails]);
 
   // Switch workspace
-  const switchWorkspace = async (workspaceId: string) => {
-    try {
-      const token = await getToken();
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/workspaces/${workspaceId}/switch`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
+  const switchWorkspace = useCallback(
+    async (workspaceId: string) => {
+      try {
+        const token = await getToken();
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/workspaces/${workspaceId}/switch`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to switch workspace");
         }
-      );
 
-      if (!response.ok) {
-        throw new Error("Failed to switch workspace");
+        await fetchWorkspaceDetails(workspaceId);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to switch workspace");
+        console.error("Error switching workspace:", err);
       }
-
-      await fetchWorkspaceDetails(workspaceId);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to switch workspace");
-      console.error("Error switching workspace:", err);
-    }
-  };
+    },
+    [getToken, fetchWorkspaceDetails],
+  );
 
   // Create workspace
-  const createWorkspace = async (data: { name: string; description?: string }) => {
+  const createWorkspace = useCallback(async (data: { name: string; description?: string }) => {
     try {
       const token = await getToken();
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/workspaces`, {
@@ -124,19 +133,19 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
       const result = await response.json();
       const newWorkspace = result.data;
-      
+
       // Refresh workspaces list
       await fetchWorkspaces();
-      
+
       // Switch to new workspace
       await switchWorkspace(newWorkspace.id);
-      
+
       return newWorkspace;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create workspace");
       throw err;
     }
-  };
+  }, [getToken, fetchWorkspaces, switchWorkspace]);
 
   // Initialize workspaces when auth is loaded
   useEffect(() => {
@@ -147,20 +156,20 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setCurrentWorkspace(null);
       setIsLoading(false);
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded, isSignedIn, fetchWorkspaces]);
 
   // Restore last workspace on mount
   useEffect(() => {
     if (workspaces.length > 0 && !currentWorkspace) {
       const lastWorkspaceId = localStorage.getItem("currentWorkspaceId");
       if (lastWorkspaceId) {
-        const workspace = workspaces.find(w => w.id === lastWorkspaceId);
+        const workspace = workspaces.find((w) => w.id === lastWorkspaceId);
         if (workspace) {
           fetchWorkspaceDetails(lastWorkspaceId);
         }
       }
     }
-  }, [workspaces]);
+  }, [workspaces, currentWorkspace, fetchWorkspaceDetails]);
 
   const value: WorkspaceContextType = {
     workspaces,

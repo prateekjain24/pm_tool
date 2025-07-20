@@ -1,29 +1,14 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
+import { maskApiKey } from "@shared/schemas";
+import type { ApiKey } from "@shared/types";
+import { AlertCircle, Check, Copy, Eye, EyeOff, Key, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert } from "@/components/ui/alert";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { 
-  Copy, 
-  Trash2, 
-  Plus, 
-  Eye, 
-  EyeOff, 
-  AlertCircle,
-  Check,
-  Key
-} from "lucide-react";
-import type { ApiKey } from "@shared/types";
-import { maskApiKey } from "@shared/schemas";
 import { useSettings } from "@/hooks/useSettings";
 
 export function ApiKeySettings() {
@@ -67,10 +52,10 @@ export function ApiKeySettings() {
       const { apiKey, plainTextKey } = result.data;
 
       // Update local state immediately for optimistic update
-      setApiKeys(prev => [...prev, apiKey]);
+      setApiKeys((prev) => [...prev, apiKey]);
       setNewKeyResult({ key: apiKey.key, plainText: plainTextKey });
       setNewKeyName("");
-      
+
       // Refetch settings to ensure consistency
       refetch();
     } catch (error) {
@@ -87,20 +72,23 @@ export function ApiKeySettings() {
 
     try {
       const token = await getToken();
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/settings/api-keys/${keyId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/settings/api-keys/${keyId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete API key");
       }
 
       // Update local state immediately for optimistic update
-      setApiKeys(prev => prev.filter(key => key.id !== keyId));
-      
+      setApiKeys((prev) => prev.filter((key) => key.id !== keyId));
+
       // Refetch settings to ensure consistency
       refetch();
     } catch (error) {
@@ -119,7 +107,7 @@ export function ApiKeySettings() {
   };
 
   const toggleKeyVisibility = (keyId: string) => {
-    setVisibleKeys(prev => {
+    setVisibleKeys((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(keyId)) {
         newSet.delete(keyId);
@@ -200,9 +188,7 @@ export function ApiKeySettings() {
       <Card>
         <CardHeader>
           <CardTitle>Your API Keys</CardTitle>
-          <CardDescription>
-            Manage your existing API keys
-          </CardDescription>
+          <CardDescription>Manage your existing API keys</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -244,15 +230,12 @@ export function ApiKeySettings() {
                       </Button>
                     </div>
                     <div className="text-xs text-muted-foreground mt-2">
-                      Created: {new Date(apiKey.createdAt).toLocaleDateString()} • 
-                      {apiKey.lastUsedAt ? (
-                        ` Last used: ${new Date(apiKey.lastUsedAt).toLocaleDateString()}`
-                      ) : (
-                        " Never used"
-                      )}
-                      {apiKey.expiresAt && (
-                        ` • Expires: ${new Date(apiKey.expiresAt).toLocaleDateString()}`
-                      )}
+                      Created: {new Date(apiKey.createdAt).toLocaleDateString()} •
+                      {apiKey.lastUsedAt
+                        ? ` Last used: ${new Date(apiKey.lastUsedAt).toLocaleDateString()}`
+                        : " Never used"}
+                      {apiKey.expiresAt &&
+                        ` • Expires: ${new Date(apiKey.expiresAt).toLocaleDateString()}`}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

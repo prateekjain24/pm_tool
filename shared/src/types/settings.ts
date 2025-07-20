@@ -5,22 +5,22 @@
 export interface UserSettings {
   id: string;
   userId: string;
-  
+
   // General settings
   firstName: string | null;
   lastName: string | null;
   email: string;
   avatarUrl: string | null;
-  
+
   // Notification preferences
   notifications: NotificationPreferences;
-  
+
   // API keys
   apiKeys: ApiKey[];
-  
+
   // Appearance
   theme: ThemePreference;
-  
+
   createdAt: Date;
   updatedAt: Date;
 }

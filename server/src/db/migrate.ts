@@ -1,6 +1,6 @@
+import * as dotenv from "dotenv";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import path from "path";
-import * as dotenv from "dotenv";
 import { connectDb, disconnectDb, getDb } from "./connection";
 
 // Load environment variables

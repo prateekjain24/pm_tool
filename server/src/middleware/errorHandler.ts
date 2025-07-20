@@ -1,13 +1,13 @@
-import type { Context, Next } from "hono";
-import { HTTPException } from "hono/http-exception";
 import type { ApiErrorResponse, ErrorCode } from "@shared/types";
 import { ErrorCodes } from "@shared/types";
+import type { Context, Next } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { ZodError } from "zod";
+import { isDevelopment } from "../config/env";
+import { addBreadcrumb, captureException } from "../config/sentry";
+import { getUser } from "../utils/auth";
 import { getLogger } from "../utils/logger";
 import { getRequestId } from "../utils/requestContext";
-import { isDevelopment } from "../config/env";
-import { captureException, addBreadcrumb } from "../config/sentry";
-import { getUser } from "../utils/auth";
 
 const logger = getLogger("error-handler");
 
@@ -43,20 +43,23 @@ export async function errorHandler(c: Context, next: Next) {
         query: c.req.query(),
       },
     });
-    
+
     await next();
   } catch (error) {
     const requestId = getRequestId(c);
     const user = getUser(c);
-    
+
     // Log the error
-    logger.error({
-      error,
-      requestId,
-      path: c.req.path,
-      method: c.req.method,
-    }, "Request error");
-    
+    logger.error(
+      {
+        error,
+        requestId,
+        path: c.req.path,
+        method: c.req.method,
+      },
+      "Request error",
+    );
+
     // Capture to Sentry (except for expected errors)
     if (error instanceof Error && !(error instanceof HTTPException && error.status < 500)) {
       captureException(error, {
@@ -77,11 +80,11 @@ export async function errorHandler(c: Context, next: Next) {
     if (error instanceof HTTPException) {
       return handleHTTPException(c, error, requestId);
     }
-    
+
     if (error instanceof ZodError) {
       return handleZodError(c, error, requestId);
     }
-    
+
     // Handle generic errors
     return handleGenericError(c, error, requestId);
   }
@@ -93,7 +96,7 @@ export async function errorHandler(c: Context, next: Next) {
 function handleHTTPException(c: Context, error: HTTPException, requestId?: string) {
   const status = error.status;
   const errorCode = statusToErrorCode[status] || ErrorCodes.INTERNAL_ERROR;
-  
+
   const response: ApiErrorResponse = {
     success: false,
     error: {
@@ -116,7 +119,7 @@ function handleHTTPException(c: Context, error: HTTPException, requestId?: strin
  */
 function handleZodError(c: Context, error: ZodError, requestId?: string) {
   const fields: Record<string, string[]> = {};
-  
+
   error.errors.forEach((err) => {
     const path = err.path.join(".");
     if (!fields[path]) {
@@ -172,7 +175,7 @@ export function createError(
   status: number,
   message: string,
   code?: ErrorCode,
-  details?: Record<string, any>
+  details?: Record<string, any>,
 ): HTTPException {
   const error = new HTTPException(status as any, { message });
   if (code || details) {
@@ -185,24 +188,22 @@ export function createError(
  * Common error factories
  */
 export const errors = {
-  unauthorized: (message = "Unauthorized") => 
-    createError(401, message, ErrorCodes.UNAUTHORIZED),
-  
-  forbidden: (message = "Forbidden") => 
-    createError(403, message, ErrorCodes.FORBIDDEN),
-  
-  notFound: (resource = "Resource") => 
+  unauthorized: (message = "Unauthorized") => createError(401, message, ErrorCodes.UNAUTHORIZED),
+
+  forbidden: (message = "Forbidden") => createError(403, message, ErrorCodes.FORBIDDEN),
+
+  notFound: (resource = "Resource") =>
     createError(404, `${resource} not found`, ErrorCodes.NOT_FOUND),
-  
-  conflict: (message: string, details?: Record<string, any>) => 
+
+  conflict: (message: string, details?: Record<string, any>) =>
     createError(409, message, ErrorCodes.CONFLICT, details),
-  
-  validationError: (message: string, fields?: Record<string, string[]>) => 
+
+  validationError: (message: string, fields?: Record<string, string[]>) =>
     createError(422, message, ErrorCodes.VALIDATION_ERROR, { fields }),
-  
-  rateLimited: (message = "Too many requests") => 
+
+  rateLimited: (message = "Too many requests") =>
     createError(429, message, ErrorCodes.RATE_LIMITED),
-  
-  internal: (message = "Internal server error") => 
+
+  internal: (message = "Internal server error") =>
     createError(500, message, ErrorCodes.INTERNAL_ERROR),
 };

@@ -10,7 +10,10 @@ export function PublicHeader() {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to={isSignedIn ? "/dashboard" : "/"} className="hover:opacity-80 transition-opacity">
+          <Link
+            to={isSignedIn ? "/dashboard" : "/"}
+            className="hover:opacity-80 transition-opacity"
+          >
             <Logo size="md" showText animated />
           </Link>
 

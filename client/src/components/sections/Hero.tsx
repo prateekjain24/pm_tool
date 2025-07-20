@@ -16,7 +16,7 @@ export function Hero() {
 
       {/* Subtle grid */}
       <div className="absolute inset-0 bg-grid-small-black/[0.02] dark:bg-grid-small-white/[0.02]" />
-      
+
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
 
@@ -33,7 +33,10 @@ export function Hero() {
           </div>
 
           {/* Enhanced badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 text-sm font-medium mb-8 shadow-sm" style={{ color: 'var(--badge-green)' }}>
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 text-sm font-medium mb-8 shadow-sm"
+            style={{ color: "var(--badge-green)" }}
+          >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -44,7 +47,13 @@ export function Hero() {
 
           {/* Main headline with gradient */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
-            <span className="block bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(to right, var(--gradient-dark), var(--gradient-medium))' }}>
+            <span
+              className="block bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, var(--gradient-dark), var(--gradient-medium))",
+              }}
+            >
               Scientific rigor for
             </span>
             <span className="block text-muted-foreground">product experiments</span>
@@ -52,39 +61,45 @@ export function Hero() {
 
           {/* Enhanced subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-            Transform hypothesis creation, validate experiments before launch, and analyze results with confidence. 
+            Transform hypothesis creation, validate experiments before launch, and analyze results
+            with confidence.
             <span className="text-foreground font-medium"> Built for modern product teams.</span>
           </p>
 
           {/* Enhanced CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
             >
               Start building hypotheses
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="border-2"
-            >
+            <Button size="lg" variant="outline" className="border-2">
               See how it works
             </Button>
           </div>
 
           {/* Enhanced trust indicators */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/20" style={{ color: 'var(--badge-green)' }}>
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/20"
+              style={{ color: "var(--badge-green)" }}
+            >
               <div className="w-2 h-2 rounded-full bg-green-500" />
               <span className="font-medium">25% higher success rate</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/20" style={{ color: 'var(--badge-blue)' }}>
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/20"
+              style={{ color: "var(--badge-blue)" }}
+            >
               <div className="w-2 h-2 rounded-full bg-blue-500" />
               <span className="font-medium">2 hours → 30 minutes</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/20" style={{ color: 'var(--badge-purple)' }}>
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/20"
+              style={{ color: "var(--badge-purple)" }}
+            >
               <div className="w-2 h-2 rounded-full bg-purple-500" />
               <span className="font-medium">Trusted by 500+ teams</span>
             </div>
