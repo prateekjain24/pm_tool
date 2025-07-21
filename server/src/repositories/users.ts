@@ -27,7 +27,7 @@ export async function getUserByClerkId(clerkId: string): Promise<User | null> {
     return null;
   }
 
-  return result[0];
+  return result[0] || null;
 }
 
 /**
@@ -53,6 +53,9 @@ export async function createUser(userData: {
 
   const [inserted] = await db.insert(users).values(newUser).returning();
 
+  if (!inserted) {
+    throw new Error("Failed to create user");
+  }
   return inserted;
 }
 

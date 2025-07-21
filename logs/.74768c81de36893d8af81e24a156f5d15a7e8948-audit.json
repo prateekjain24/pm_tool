@@ -1,25 +1,30 @@
 {
-  "keep": {
-    "days": true,
-    "amount": 14
-  },
-  "auditLog": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/.74768c81de36893d8af81e24a156f5d15a7e8948-audit.json",
-  "files": [
-    {
-      "date": 1752790883719,
-      "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-18.log",
-      "hash": "8a2ba39c109b8f81232674a6b5a7cf725cbcf6e64d4e6f505d56ec29027d9aaf"
+    "keep": {
+        "days": true,
+        "amount": 14
     },
-    {
-      "date": 1752952523500,
-      "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-19.log",
-      "hash": "21da18ebdb37758a50c9781f880e13470d2ba8658e9044cbfade0c79c3f83d5e"
-    },
-    {
-      "date": 1752985682037,
-      "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-20.log",
-      "hash": "9ccba32d869da57f5a8b88c786526984fa726765006bf339fcf44512099a0dd4"
-    }
-  ],
-  "hashType": "sha256"
+    "auditLog": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/.74768c81de36893d8af81e24a156f5d15a7e8948-audit.json",
+    "files": [
+        {
+            "date": 1752790883719,
+            "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-18.log",
+            "hash": "8a2ba39c109b8f81232674a6b5a7cf725cbcf6e64d4e6f505d56ec29027d9aaf"
+        },
+        {
+            "date": 1752952523500,
+            "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-19.log",
+            "hash": "21da18ebdb37758a50c9781f880e13470d2ba8658e9044cbfade0c79c3f83d5e"
+        },
+        {
+            "date": 1752985682037,
+            "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-20.log",
+            "hash": "9ccba32d869da57f5a8b88c786526984fa726765006bf339fcf44512099a0dd4"
+        },
+        {
+            "date": 1753135753837,
+            "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-22.log",
+            "hash": "ae9b461bc7518aea2b1bc649ddb2f887344bcf8e7ad383357de2dd7293c83519"
+        }
+    ],
+    "hashType": "sha256"
 }

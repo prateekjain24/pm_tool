@@ -17,6 +17,9 @@ import { getValidated, validateBody, validateQuery } from "./middleware/validati
 import { settingsRouter } from "./routes/settings";
 // Import routes
 import { workspaceRouter } from "./routes/workspaces";
+import { users as usersRouter } from "./routes/users";
+import { invitations as invitationsRouter } from "./routes/invitations";
+import { webhooks as webhooksRouter } from "./routes/webhooks";
 // Import utilities
 import { apiPaginated, apiSuccess, parsePaginationParams } from "./utils/apiResponse";
 import { getUser, requireUser } from "./utils/auth";
@@ -124,6 +127,18 @@ app.route("/api/workspaces", workspaceRouter);
 
 // Mount settings routes
 app.route("/api/user/settings", settingsRouter);
+
+// Mount user routes
+app.route("/api/user", usersRouter);
+
+// Mount users management routes (for admin)
+app.route("/api/users", usersRouter);
+
+// Mount invitations routes
+app.route("/api/invitations", invitationsRouter);
+
+// Mount webhooks routes
+app.route("/api/webhooks", webhooksRouter);
 
 // Status endpoint - works with or without authentication
 app.get("/api/status", optionalAuthMiddleware, async (c) => {

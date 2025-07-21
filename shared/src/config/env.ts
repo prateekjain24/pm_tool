@@ -24,6 +24,7 @@ export const serverEnvSchema = baseEnvSchema.extend({
   // Clerk Auth
   CLERK_SECRET_KEY: z.string().startsWith("sk_").describe("Clerk secret key for backend"),
   CLERK_PUBLISHABLE_KEY: z.string().startsWith("pk_").describe("Clerk publishable key"),
+  CLERK_WEBHOOK_SECRET: z.string().describe("Clerk webhook signing secret"),
 
   // AI Services
   OPENAI_API_KEY: z.string().startsWith("sk-").describe("OpenAI API key"),

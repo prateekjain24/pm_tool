@@ -10,6 +10,7 @@ export * from "./auth";
 export * from "./document";
 export * from "./experiment";
 export * from "./hypothesis";
+export * from "./invitation";
 export * from "./settings";
 export * from "./utils";
 export * from "./workspace";

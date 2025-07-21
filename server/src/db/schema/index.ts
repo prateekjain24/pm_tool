@@ -7,6 +7,7 @@ import { hypothesisScores } from "./hypothesisScores";
 import { userSettings } from "./userSettings";
 import { users } from "./users";
 import { workspaces } from "./workspaces";
+import { invitations } from "./invitations";
 
 // Define relations between tables
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -29,6 +30,7 @@ export const workspacesRelations = relations(workspaces, ({ many }) => ({
   hypotheses: many(hypotheses),
   experiments: many(experiments),
   documents: many(documents),
+  invitations: many(invitations),
 }));
 
 export const hypothesesRelations = relations(hypotheses, ({ one, many }) => ({
@@ -105,6 +107,21 @@ export const userSettingsRelations = relations(userSettings, ({ one }) => ({
   }),
 }));
 
+export const invitationsRelations = relations(invitations, ({ one }) => ({
+  workspace: one(workspaces, {
+    fields: [invitations.workspaceId],
+    references: [workspaces.id],
+  }),
+  invitedBy: one(users, {
+    fields: [invitations.invitedById],
+    references: [users.id],
+  }),
+  acceptedBy: one(users, {
+    fields: [invitations.acceptedByUserId],
+    references: [users.id],
+  }),
+}));
+
 export * from "./documents";
 export * from "./documentVersions";
 export * from "./experiments";
@@ -114,6 +131,7 @@ export * from "./userSettings";
 // Export all schemas
 export * from "./users";
 export * from "./workspaces";
+export * from "./invitations";
 
 // Export for migrations
 export const schema = {
@@ -125,4 +143,5 @@ export const schema = {
   documents,
   documentVersions,
   userSettings,
+  invitations,
 };

@@ -5,7 +5,7 @@ import {
   updateNotificationPreferencesSchema,
   updateThemeSchema,
 } from "@shared/schemas";
-import type { CreateApiKeyResponse } from "@shared/types";
+import type { CreateApiKeyResponse, NotificationPreferences } from "@shared/types";
 import { Hono } from "hono";
 import { authMiddleware } from "../middleware/auth";
 import {
@@ -113,7 +113,10 @@ settingsRouter.put(
       });
 
       // Update notification preferences in database
-      const updatedNotifications = await updateNotificationPreferences(user.id, data);
+      const updatedNotifications = await updateNotificationPreferences(user.id, {
+        email: data.email as NotificationPreferences["email"],
+        inApp: data.inApp as NotificationPreferences["inApp"],
+      });
 
       if (!updatedNotifications) {
         return apiErrors.notFound(c, "User settings");
@@ -152,7 +155,7 @@ settingsRouter.post("/api-keys", zValidator("json", createApiKeySchema), async (
     // Create API key in database
     const result = await addApiKey(user.id, {
       name: data.name,
-      expiresIn: data.expiresIn,
+      expiresIn: data.expiresIn ?? undefined,
     });
 
     if (!result) {

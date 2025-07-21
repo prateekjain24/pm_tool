@@ -10,6 +10,10 @@ import { Profile } from "./pages/Profile";
 import { Settings } from "./pages/Settings";
 import { SignInPage } from "./pages/SignIn";
 import { SignUpPage } from "./pages/SignUp";
+import Admin from "./pages/Admin";
+import AcceptInvitation from "./pages/AcceptInvitation";
+import Team from "./pages/Team";
+import { Hypotheses } from "./pages/Hypotheses";
 
 function App() {
   return (
@@ -30,6 +34,7 @@ function App() {
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/logo-demo" element={<LogoDemo />} />
+        <Route path="/invitation/accept" element={<AcceptInvitation />} />
 
         {/* Onboarding route (no dashboard layout) */}
         <Route
@@ -51,15 +56,7 @@ function App() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/hypotheses"
-            element={
-              <div className="p-6">
-                <h1 className="text-2xl font-bold">Hypotheses</h1>
-                <p className="text-muted-foreground mt-2">Coming soon...</p>
-              </div>
-            }
-          />
+          <Route path="/hypotheses" element={<Hypotheses />} />
           <Route
             path="/experiments"
             element={
@@ -79,6 +76,8 @@ function App() {
             }
           />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/team" element={<Team />} />
         </Route>
 
         {/* Catch all redirect */}

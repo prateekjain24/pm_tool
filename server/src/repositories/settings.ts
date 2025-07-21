@@ -31,6 +31,9 @@ export async function getUserSettings(userId: string): Promise<UserSettings | nu
     }
 
     const settings = results[0];
+    if (!settings) {
+      return null;
+    }
     return {
       id: settings.id,
       userId: settings.userId,
@@ -82,6 +85,10 @@ export async function createUserSettings(
 
   const db = getDb();
   const [inserted] = await db.insert(userSettings).values(settingsData).returning();
+
+  if (!inserted) {
+    throw new Error("Failed to create user settings");
+  }
 
   return {
     id: inserted.id,
@@ -182,7 +189,7 @@ export async function updateNotificationPreferences(
     .where(eq(userSettings.userId, userId))
     .returning();
 
-  return updated.notifications as NotificationPreferences;
+  return updated ? updated.notifications as NotificationPreferences : null;
 }
 
 /**

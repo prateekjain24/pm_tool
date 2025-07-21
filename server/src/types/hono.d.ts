@@ -4,6 +4,8 @@ declare module "hono" {
   interface ContextVariableMap {
     // Auth
     user?: AuthUser;
+    userRole?: string;
+    workspaceId?: string;
 
     // Request context
     requestId?: string;

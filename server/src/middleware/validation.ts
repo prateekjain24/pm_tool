@@ -20,7 +20,7 @@ interface ValidationConfig<T extends ValidationType> {
  */
 export function validate<T extends ValidationType>(
   config: ValidationConfig<T>,
-): (c: Context, next: Next) => Promise<undefined | Response> {
+) {
   return async (c: Context, next: Next) => {
     try {
       let data: unknown;
@@ -66,7 +66,7 @@ export function validate<T extends ValidationType>(
       // Store validated data in context for later use
       c.set(`validated${capitalize(config.target)}`, validated);
 
-      await next();
+      return await next();
     } catch (error) {
       if (error instanceof Error && error.name === "ZodError") {
         const zodError = error as ZodError;

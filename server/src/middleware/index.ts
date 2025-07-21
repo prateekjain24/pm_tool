@@ -15,3 +15,15 @@ export {
   validateParams,
   validateQuery,
 } from "./validation";
+export {
+  type Permission,
+  type Resource,
+  EnhancedRolePermissions,
+  hasPermission,
+  requirePermission,
+  requireAnyPermission,
+  requireAllPermissions,
+  requireRole,
+  requireWorkspacePermission,
+  getUserPermissions,
+} from "./rbac";
