@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@client/components/ui/card";
-import { Button } from "@client/components/ui/button";
-import { Badge } from "@client/components/ui/badge";
-import { Alert, AlertDescription } from "@client/components/ui/alert";
-import { useApiClient } from "@client/lib/api";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useApiClient } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 import { Mail, UserX, RefreshCw, Loader2, Clock } from "lucide-react";
 import type { User } from "@shared/types";

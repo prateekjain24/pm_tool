@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ProgressIndicator } from "./ProgressIndicator";
+import { HypothesisFormData } from "@/types/hypothesis-builder";
 
 // Import step components
 import { StepOne } from "./steps/StepOne";
@@ -15,23 +16,55 @@ interface HypothesisBuilderProps {
   className?: string;
 }
 
+// Initial form state
+const initialFormData: HypothesisFormData = {
+  intervention: "",
+  targetAudience: "",
+  reasoning: "",
+  expectedOutcome: "",
+  successMetrics: [],
+};
+
 export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<HypothesisFormData>(initialFormData);
+  
   const totalSteps = 5;
 
-  // Step components mapping
-  const stepComponents = {
-    1: StepOne,
-    2: StepTwo,
-    3: StepThree,
-    4: StepFour,
-    5: StepFive,
+  // Update form data for a specific field
+  const updateFormData = useCallback((field: keyof HypothesisFormData) => {
+    return (value: string | string[]) => {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    };
+  }, []);
+
+  // Validation functions for each step
+  const validateStep = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return formData.intervention.trim().length >= 10;
+      case 2:
+        return formData.targetAudience.trim().length >= 10;
+      case 3:
+        return formData.reasoning.trim().length >= 10;
+      case 4:
+        return formData.expectedOutcome.trim().length >= 10;
+      case 5:
+        return formData.successMetrics.length > 0;
+      default:
+        return false;
+    }
   };
 
-  const CurrentStepComponent = stepComponents[currentStep as keyof typeof stepComponents];
+  // Check if current step is valid
+  const isCurrentStepValid = validateStep(currentStep);
 
+  // Handle navigation
   const handleNext = () => {
-    if (currentStep < totalSteps) {
+    if (currentStep < totalSteps && isCurrentStepValid) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -43,10 +76,69 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
   };
 
   const handleStepClick = (step: number) => {
-    // In the future, this might have validation logic
-    // For now, allow navigation to any previous step
+    // Allow navigation to any previous step or current step
     if (step <= currentStep) {
       setCurrentStep(step);
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    if (isCurrentStepValid) {
+      // TODO: Submit hypothesis for AI analysis
+      console.log("Submitting hypothesis:", formData);
+    }
+  };
+
+  // Get the current step component with props
+  const getCurrentStepComponent = () => {
+    const commonProps = {
+      className: "space-y-4",
+    };
+
+    switch (currentStep) {
+      case 1:
+        return (
+          <StepOne 
+            {...commonProps}
+            value={formData.intervention}
+            onChange={updateFormData('intervention')}
+          />
+        );
+      case 2:
+        return (
+          <StepTwo 
+            {...commonProps}
+            value={formData.targetAudience}
+            onChange={updateFormData('targetAudience')}
+          />
+        );
+      case 3:
+        return (
+          <StepThree
+            {...commonProps}
+            value={formData.reasoning}
+            onChange={updateFormData('reasoning')}
+          />
+        );
+      case 4:
+        return (
+          <StepFour
+            {...commonProps}
+            value={formData.expectedOutcome}
+            onChange={updateFormData('expectedOutcome')}
+          />
+        );
+      case 5:
+        return (
+          <StepFive
+            {...commonProps}
+            value={formData.successMetrics}
+            onChange={updateFormData('successMetrics')}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -69,9 +161,9 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
         </CardHeader>
 
         {/* Main content area */}
-        <CardContent className="min-h-[300px] px-6 md:px-8">
+        <CardContent className="min-h-[400px] px-6 md:px-8">
           <div className="animate-in fade-in-50 duration-300">
-            <CurrentStepComponent className="space-y-4" />
+            {getCurrentStepComponent()}
           </div>
         </CardContent>
 
@@ -88,20 +180,29 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
           
           <div className="flex items-center text-sm text-muted-foreground">
             <span className="hidden sm:inline">
-              Press Enter to continue
+              {isCurrentStepValid ? "Ready to continue" : "Complete this step to continue"}
             </span>
           </div>
 
-          <Button
-            onClick={handleNext}
-            disabled={currentStep === totalSteps}
-            className="min-w-[100px]"
-          >
-            {currentStep === totalSteps ? "Submit" : "Continue"}
-          </Button>
+          {currentStep === totalSteps ? (
+            <Button
+              onClick={handleSubmit}
+              disabled={!isCurrentStepValid}
+              className="min-w-[100px]"
+            >
+              Submit
+            </Button>
+          ) : (
+            <Button
+              onClick={handleNext}
+              disabled={!isCurrentStepValid}
+              className="min-w-[100px]"
+            >
+              Continue
+            </Button>
+          )}
         </CardFooter>
       </Card>
-
     </div>
   );
 }

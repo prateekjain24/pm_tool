@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { usePermissions } from "@client/hooks/usePermissions";
+import { usePermissions } from "@/hooks/usePermissions";
 import type { User } from "@shared/types";
 
 // Import types from usePermissions hook

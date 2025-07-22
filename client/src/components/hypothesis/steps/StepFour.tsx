@@ -1,11 +1,8 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { StepProps } from "@/types/hypothesis-builder";
 
-interface StepFourProps {
-  className?: string;
-}
-
-export function StepFour({ className }: StepFourProps) {
+export function StepFour({ value, onChange, className }: StepProps) {
   return (
     <div className={cn("space-y-6", className)}>
       <div className="space-y-2">

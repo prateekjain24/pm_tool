@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth, useSignIn } from "@clerk/clerk-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@client/components/ui/card";
-import { Button } from "@client/components/ui/button";
-import { Alert, AlertDescription } from "@client/components/ui/alert";
-import { LoadingSpinner } from "@client/components/ui/loading-spinner";
-import { Badge } from "@client/components/ui/badge";
-import { useApiClient } from "@client/lib/api";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Badge } from "@/components/ui/badge";
+import { useApiClient } from "@/lib/api";
 import { formatDistanceToNow } from "date-fns";
 import { CheckCircle, XCircle, Mail, UserPlus, Clock, AlertCircle } from "lucide-react";
 

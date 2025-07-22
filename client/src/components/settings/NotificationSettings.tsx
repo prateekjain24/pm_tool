@@ -78,7 +78,7 @@ export function NotificationSettings() {
         throw new Error("Failed to update notification preferences");
       }
 
-      const _result = await response.json();
+      await response.json();
       setSaveMessage({ type: "success", message: "Notification preferences saved!" });
     } catch (error) {
       console.error("Failed to save preferences:", error);

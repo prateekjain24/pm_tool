@@ -15,11 +15,6 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
-  private async getAuthToken(): Promise<string | null> {
-    // This is a workaround since we can't use hooks in a class
-    // In practice, you'll pass the token from the component using the hook
-    return null;
-  }
 
   async request<T = any>(
     path: string,
@@ -28,13 +23,13 @@ class ApiClient {
     const { token, ...fetchOptions } = options;
     
     const url = `${this.baseUrl}${path}`;
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...fetchOptions.headers,
+      ...(fetchOptions.headers as Record<string, string>),
     };
 
     if (token) {
-      headers.Authorization = `Bearer ${token}`;
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const response = await fetch(url, {

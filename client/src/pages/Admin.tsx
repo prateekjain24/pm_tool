@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { PermissionGate } from "@client/components/auth/PermissionGate";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@client/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@client/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@client/components/ui/alert";
+import { PermissionGate } from "@/components/auth/PermissionGate";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Users, Shield, Activity, Settings } from "lucide-react";
 
 export default function Admin() {

@@ -1,6 +1,6 @@
 import { useUser as useClerkUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
-import { useApiClient } from "@client/lib/api";
+import { useApiClient } from "@/lib/api";
 import type { User } from "@shared/types";
 
 // Import types from backend RBAC

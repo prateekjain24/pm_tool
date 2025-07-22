@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { PermissionGate } from "@client/components/auth/PermissionGate";
-import { InviteTeamModal } from "@client/components/team/InviteTeamModal";
-import { InvitationsList } from "@client/components/team/InvitationsList";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@client/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@client/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@client/components/ui/alert";
-import { Users, UserPlus, Mail, Shield } from "lucide-react";
+import { PermissionGate } from "@/components/auth/PermissionGate";
+import { InviteTeamModal } from "@/components/team/InviteTeamModal";
+import { InvitationsList } from "@/components/team/InvitationsList";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Users, Shield } from "lucide-react";
 
 export default function Team() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);

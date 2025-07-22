@@ -66,7 +66,7 @@ export function GeneralSettings() {
         throw new Error("Failed to update settings");
       }
 
-      const _result = await response.json();
+      await response.json();
       setSaveMessage({ type: "success", message: "Settings saved successfully!" });
     } catch (error) {
       console.error("Failed to save settings:", error);
