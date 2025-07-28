@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { StepProps, CHARACTER_LIMITS, VALIDATION_MESSAGES } from "@/types/hypothesis-builder";
+import { AuroraText } from "@/components/ui/aurora-text";
+import { MagicCard } from "@/components/ui/magic-card";
+import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
+import { Sparkles, Lightbulb } from "lucide-react";
 
 // Example changes for inspiration
 const changeExamples = [
@@ -55,11 +60,21 @@ export function StepOne({ value, onChange, className }: StepProps) {
   const showError = intervention.length > 0 && !isValid;
 
   return (
-    <div className={cn("space-y-6", className)}>
-      {/* Header */}
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold">What change do you want to test?</h2>
-        <p className="text-muted-foreground">
+    <motion.div 
+      className={cn("space-y-6", className)}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      {/* Header with aurora text */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <AuroraText className="text-2xl font-semibold">
+            What change do you want to test?
+          </AuroraText>
+          <Sparkles className="w-5 h-5 text-primary animate-pulse" />
+        </div>
+        <p className="text-muted-foreground text-base">
           Describe the specific change or feature you want to experiment with. Be as clear and specific as possible.
         </p>
       </div>
@@ -108,37 +123,48 @@ export function StepOne({ value, onChange, className }: StepProps) {
         )}
       </div>
 
-      {/* Examples section */}
+      {/* Examples section with magic cards */}
       <div className="space-y-4">
-        <h3 className="text-sm font-medium flex items-center gap-2">
-          <span className="text-lg">💡</span> Need inspiration?
+        <h3 className="text-base font-medium flex items-center gap-2">
+          <Lightbulb className="w-5 h-5 text-yellow-500" />
+          Need inspiration?
         </h3>
         
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {changeExamples.map((category, idx) => (
-            <div 
+            <MagicCard
               key={idx}
-              className="rounded-lg bg-muted/50 p-4 space-y-2"
+              className="cursor-pointer p-5 space-y-3"
+              gradientColor="#10b98120"
             >
-              <h4 className="text-sm font-medium">{category.title}</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
+              <div className="flex items-center justify-between">
+                <h4 className="font-medium">{category.title}</h4>
+                <Badge variant="secondary" className="text-xs">
+                  {category.examples.length} ideas
+                </Badge>
+              </div>
+              <ul className="space-y-2">
                 {category.examples.map((example, exIdx) => (
-                  <li key={exIdx} className="flex items-start gap-1">
-                    <span className="text-muted-foreground/70 mt-0.5">•</span>
+                  <motion.li 
+                    key={exIdx}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <button
                       type="button"
                       onClick={() => onChange(example)}
-                      className="text-left hover:text-foreground transition-colors"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors text-left w-full flex items-start gap-2 group"
                     >
-                      {example}
+                      <span className="text-primary/50 group-hover:text-primary transition-colors">→</span>
+                      <span>{example}</span>
                     </button>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
+            </MagicCard>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

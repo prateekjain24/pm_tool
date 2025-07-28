@@ -131,6 +131,7 @@ Client connects to `http://localhost:3000` in development.
 
 ## Frontend Design Guidelines
 - Use minimalistic aesthetics for frontend and use Shadcn as much as possible
+- Always think like a Seasoned designer when working on frontend. use modern design and shadcn components
 
 ## Websearch Guidelines
 - When doing websearch use latest vs year. current year is 2025.
