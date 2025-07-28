@@ -58,12 +58,14 @@ Client connects to `http://localhost:3000` in development.
 ## Project Features
 
 ### Implemented
-1. **Hypothesis Builder** (In Progress): Multi-step wizard for hypothesis creation
+1. **Hypothesis Builder** ✅: Multi-step wizard for hypothesis creation
    - ✅ Step 1: Intervention input with AI-powered examples
    - ✅ Step 2: Target audience selection with size estimation
    - ✅ Step 3: Reasoning with evidence collection
    - ✅ Step 4: Expected outcome with metric configuration
-   - ✅ Step 5: Success metrics definition
+   - ✅ Step 5: Success metrics definition with categorization (Primary/Secondary/Guardrail)
+   - ✅ Progress indicator with step labels and animations
+   - ✅ Full navigation support including keyboard shortcuts
    - 🔄 AI quality scoring (pending)
 
 ### To Be Implemented
@@ -76,15 +78,21 @@ Client connects to `http://localhost:3000` in development.
 
 ### Hypothesis Builder Components
 - **Main Component**: `client/src/components/hypothesis/HypothesisBuilder.tsx`
+  - Keyboard navigation support (arrow keys, Enter, Escape, number keys 1-5)
+  - Form state management with validation gates
+  - Responsive design with mobile support
 - **Step Components**: Located in `client/src/components/hypothesis/steps/`
-  - StepOne: Intervention description with examples
-  - StepTwo: Target audience with checkboxes and custom input
-  - StepThree: Reasoning with evidence collection
-  - StepFour: Expected outcome configuration
-  - StepFive: Success metrics definition
-- **Progress Indicator**: Visual step tracker with navigation
+  - StepOne: Intervention description with AI-powered examples
+  - StepTwo: Target audience with multi-select and custom input
+  - StepThree: Reasoning with evidence collection and management
+  - StepFour: Expected outcome with metric/baseline/lift configuration
+  - StepFive: Success metrics with Primary/Secondary/Guardrail categorization
+- **Progress Components**:
+  - `AnimatedProgressIndicator.tsx`: Animated step tracker with labels
+  - Desktop: Interactive dots with pulse animations
+  - Mobile: Progress bar with shimmer effect
 - **Types**: Defined in `client/src/types/hypothesis-builder.ts`
-- **UI Components**: checkbox, tooltip from shadcn/ui
+- **UI Components**: checkbox, tooltip, shimmer-button, magic-card from shadcn/ui
 
 ### Form Validation Patterns
 - Each step has its own validation logic

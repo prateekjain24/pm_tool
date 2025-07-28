@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -77,17 +77,17 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
   const isCurrentStepValid = validateStep(currentStep);
 
   // Handle navigation
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (currentStep < totalSteps && isCurrentStepValid) {
       setCurrentStep(currentStep + 1);
     }
-  };
+  }, [currentStep, isCurrentStepValid]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
-  };
+  }, [currentStep]);
 
   const handleStepClick = (step: number) => {
     // Allow navigation to any previous step or current step
@@ -97,12 +97,64 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (isCurrentStepValid) {
       // TODO: Submit hypothesis for AI analysis
       console.log("Submitting hypothesis:", formData);
     }
-  };
+  }, [isCurrentStepValid, formData]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      if (event.target instanceof HTMLInputElement || 
+          event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      switch (event.key) {
+        case 'ArrowLeft':
+          event.preventDefault();
+          handleBack();
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          if (isCurrentStepValid) {
+            handleNext();
+          }
+          break;
+        case 'Enter':
+          event.preventDefault();
+          if (currentStep === totalSteps && isCurrentStepValid) {
+            handleSubmit();
+          } else if (isCurrentStepValid) {
+            handleNext();
+          }
+          break;
+        case 'Escape':
+          event.preventDefault();
+          // Quick jump to step 1
+          setCurrentStep(1);
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5': {
+          event.preventDefault();
+          const step = parseInt(event.key);
+          if (step <= currentStep) {
+            setCurrentStep(step);
+          }
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentStep, isCurrentStepValid, handleNext, handleBack, handleSubmit]);
 
   // Get the current step component with props
   const getCurrentStepComponent = () => {
@@ -199,7 +251,15 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
         </CardContent>
 
         {/* Footer with navigation */}
-        <CardFooter className="flex justify-between items-center gap-4 pt-8 px-6 md:px-10 pb-8 bg-muted/30">
+        <CardFooter className="flex flex-col gap-4 pt-8 px-6 md:px-10 pb-8 bg-muted/30">
+          {/* Keyboard shortcuts hint */}
+          <div className="text-xs text-muted-foreground text-center w-full">
+            <span className="hidden sm:inline">
+              Use ← → arrow keys to navigate • Enter to continue • 1-5 to jump to step • Esc to reset
+            </span>
+          </div>
+          
+          <div className="flex justify-between items-center gap-4 w-full">
           <Button
             variant="outline"
             onClick={handleBack}
@@ -241,6 +301,7 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
               <ChevronRight className="w-4 h-4 ml-1" />
             </ShimmerButton>
           )}
+          </div>
         </CardFooter>
       </Card>
     </div>

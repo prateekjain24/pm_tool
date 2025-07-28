@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { StepProps, TargetAudience } from "@/types/hypothesis-builder";
+import type { StepProps, TargetAudience } from "@/types/hypothesis-builder";
 import { Info, Users } from "lucide-react";
 
 // Define preset audiences with tooltips

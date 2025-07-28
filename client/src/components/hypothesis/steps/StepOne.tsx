@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { StepProps, CHARACTER_LIMITS, VALIDATION_MESSAGES } from "@/types/hypothesis-builder";
+import { type StepProps, CHARACTER_LIMITS, VALIDATION_MESSAGES } from "@/types/hypothesis-builder";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { MagicCard } from "@/components/ui/magic-card";
 import { Badge } from "@/components/ui/badge";
