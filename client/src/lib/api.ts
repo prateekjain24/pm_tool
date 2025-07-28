@@ -16,7 +16,7 @@ class ApiClient {
   }
 
 
-  async request<T = any>(
+  async request<T = unknown>(
     path: string,
     options: RequestInit & { token?: string | null } = {}
   ): Promise<T> {
@@ -29,7 +29,7 @@ class ApiClient {
     };
 
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`;
     }
 
     const response = await fetch(url, {
@@ -120,7 +120,7 @@ export const apiClient = new ApiClient(
 export function useApiClient() {
   const { getToken } = useAuth();
 
-  const makeRequest = async <T = any>(
+  const makeRequest = async <T = unknown>(
     requestFn: (token: string) => Promise<T>
   ): Promise<T> => {
     const token = await getToken();

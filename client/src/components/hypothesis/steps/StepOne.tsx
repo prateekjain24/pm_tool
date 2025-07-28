@@ -131,9 +131,9 @@ export function StepOne({ value, onChange, className }: StepProps) {
         </h3>
         
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {changeExamples.map((category, idx) => (
+          {changeExamples.map((category) => (
             <MagicCard
-              key={idx}
+              key={category.title}
               className="cursor-pointer p-5 space-y-3"
               gradientColor="#10b98120"
             >
@@ -144,9 +144,9 @@ export function StepOne({ value, onChange, className }: StepProps) {
                 </Badge>
               </div>
               <ul className="space-y-2">
-                {category.examples.map((example, exIdx) => (
+                {category.examples.map((example) => (
                   <motion.li 
-                    key={exIdx}
+                    key={example}
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
                   >

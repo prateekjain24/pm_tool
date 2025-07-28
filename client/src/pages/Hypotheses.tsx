@@ -1,7 +1,6 @@
 import { HypothesisBuilder } from "@/components/hypothesis/HypothesisBuilder";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
 
 export function Hypotheses() {

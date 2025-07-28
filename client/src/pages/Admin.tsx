@@ -9,9 +9,11 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState("users");
 
   return (
-    <PermissionGate 
-      role="admin"
-      fallback={
+    <>
+      {/* biome-ignore lint/a11y/useValidAriaRole: This is a custom prop, not an ARIA role */}
+      <PermissionGate 
+        role="admin"
+        fallback={
         <div className="flex items-center justify-center min-h-screen">
           <Alert className="max-w-md">
             <Shield className="h-4 w-4" />
@@ -93,19 +95,19 @@ export default function Admin() {
               <CardContent>
                 <div className="space-y-4">
                   <RoleCard
-                    role="Admin"
+                    roleName="Admin"
                     description="Full system access including user management"
                     permissions={["All permissions"]}
                     userCount={8}
                   />
                   <RoleCard
-                    role="Member"
+                    roleName="Member"
                     description="Standard user with read and write access"
                     permissions={["Read", "Write", "Create experiments"]}
                     userCount={98}
                   />
                   <RoleCard
-                    role="Viewer"
+                    roleName="Viewer"
                     description="Read-only access to all resources"
                     permissions={["Read only"]}
                     userCount={18}
@@ -149,6 +151,7 @@ export default function Admin() {
         </Tabs>
       </div>
     </PermissionGate>
+    </>
   );
 }
 
@@ -172,8 +175,8 @@ function StatsCard({ title, value, icon, description }: {
   );
 }
 
-function RoleCard({ role, description, permissions, userCount }: {
-  role: string;
+function RoleCard({ roleName, description, permissions, userCount }: {
+  roleName: string;
   description: string;
   permissions: string[];
   userCount: number;
@@ -181,7 +184,7 @@ function RoleCard({ role, description, permissions, userCount }: {
   return (
     <div className="border rounded-lg p-4">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-semibold">{role}</h3>
+        <h3 className="font-semibold">{roleName}</h3>
         <span className="text-sm text-muted-foreground">{userCount} users</span>
       </div>
       <p className="text-sm text-muted-foreground mb-2">{description}</p>

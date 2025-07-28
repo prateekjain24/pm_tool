@@ -221,7 +221,7 @@ export function StepThree({ value, onChange, className }: StepProps) {
         {reasoning.evidence.length > 0 && (
           <div className="space-y-2">
             {reasoning.evidence.map((evidence, index) => (
-              <Card key={index} className="bg-muted/50">
+              <Card key={`${evidence.title}-${index}`} className="bg-muted/50">
                 <CardContent className="flex items-center justify-between p-3">
                   <div className="flex items-start gap-2 flex-1 min-w-0">
                     <Link className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
@@ -315,9 +315,9 @@ export function StepThree({ value, onChange, className }: StepProps) {
         </h3>
         
         <div className="grid gap-3">
-          {reasoningExamples.map((item, idx) => (
+          {reasoningExamples.map((item) => (
             <Card 
-              key={idx}
+              key={item.category}
               className="cursor-pointer hover:bg-muted/50 transition-colors"
               onClick={() => handleExampleClick(item.example)}
             >

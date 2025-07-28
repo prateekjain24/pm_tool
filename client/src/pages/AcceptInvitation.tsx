@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth, useSignIn } from "@clerk/clerk-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,17 +32,7 @@ export default function AcceptInvitation() {
 
   const token = searchParams.get("token");
 
-  useEffect(() => {
-    if (!token) {
-      setError("Invalid invitation link");
-      setIsLoading(false);
-      return;
-    }
-
-    verifyInvitation();
-  }, [token]);
-
-  const verifyInvitation = async () => {
+  const verifyInvitation = useCallback(async () => {
     try {
       if (!token) {
         throw new Error("No invitation token provided");
@@ -54,7 +44,17 @@ export default function AcceptInvitation() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [token, api]);
+
+  useEffect(() => {
+    if (!token) {
+      setError("Invalid invitation link");
+      setIsLoading(false);
+      return;
+    }
+
+    verifyInvitation();
+  }, [token, verifyInvitation]);
 
   const handleAccept = async () => {
     if (!token) return;

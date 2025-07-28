@@ -33,6 +33,7 @@ export function ProgressIndicator({
           return (
             <button
               key={stepNumber}
+              type="button"
               onClick={() => isClickable && onStepClick(stepNumber)}
               disabled={!isClickable}
               className={cn(

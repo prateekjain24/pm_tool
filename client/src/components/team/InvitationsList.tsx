@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,23 +34,23 @@ export function InvitationsList({ refreshTrigger }: InvitationsListProps) {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const api = useApiClient();
 
-  const fetchInvitations = async () => {
+  const fetchInvitations = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
     try {
       const data = await api.getInvitations();
-      setInvitations(data.invitations as any[]);
+      setInvitations(data.invitations);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to load invitations");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [api]);
 
   useEffect(() => {
     fetchInvitations();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, fetchInvitations]);
 
   const handleRevoke = async (invitationId: string) => {
     setActionLoading(invitationId);

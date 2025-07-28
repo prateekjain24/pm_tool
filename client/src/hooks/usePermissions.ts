@@ -1,5 +1,5 @@
 import { useUser as useClerkUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useApiClient } from "@/lib/api";
 import type { User } from "@shared/types";
 
@@ -49,7 +49,7 @@ export function usePermissions(): UsePermissionsReturn {
   const [isLoading, setIsLoading] = useState(false);
   const api = useApiClient();
 
-  const fetchPermissions = async () => {
+  const fetchPermissions = useCallback(async () => {
     if (!clerkUser) {
       setPermissions(null);
       return;
@@ -81,7 +81,7 @@ export function usePermissions(): UsePermissionsReturn {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [clerkUser, api]);
 
   useEffect(() => {
     if (isLoaded && clerkUser) {
@@ -89,7 +89,7 @@ export function usePermissions(): UsePermissionsReturn {
     } else {
       setPermissions(null);
     }
-  }, [clerkUser, isLoaded]);
+  }, [clerkUser, isLoaded, fetchPermissions]);
 
   const hasPermission = (permission: Permission, resource?: Resource): boolean => {
     if (!permissions) return false;
