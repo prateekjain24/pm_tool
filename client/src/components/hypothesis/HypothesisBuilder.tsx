@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ProgressIndicator } from "./ProgressIndicator";
-import { HypothesisFormData } from "@/types/hypothesis-builder";
+import type { HypothesisFormData, TargetAudience, Reasoning, ExpectedOutcome } from "@/types/hypothesis-builder";
 
 // Import step components
 import { StepOne } from "./steps/StepOne";
@@ -19,9 +19,15 @@ interface HypothesisBuilderProps {
 // Initial form state
 const initialFormData: HypothesisFormData = {
   intervention: "",
-  targetAudience: "",
-  reasoning: "",
-  expectedOutcome: "",
+  targetAudience: {
+    selected: [],
+    customAudience: ""
+  },
+  reasoning: {
+    mainReasoning: "",
+    evidence: []
+  },
+  expectedOutcome: null,
   successMetrics: [],
 };
 
@@ -33,7 +39,7 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
 
   // Update form data for a specific field
   const updateFormData = useCallback((field: keyof HypothesisFormData) => {
-    return (value: string | string[]) => {
+    return (value: string | string[] | TargetAudience | Reasoning | ExpectedOutcome | null) => {
       setFormData(prev => ({
         ...prev,
         [field]: value
@@ -47,11 +53,15 @@ export function HypothesisBuilder({ className }: HypothesisBuilderProps) {
       case 1:
         return formData.intervention.trim().length >= 10;
       case 2:
-        return formData.targetAudience.trim().length >= 10;
+        return formData.targetAudience.selected.length > 0 || 
+               (formData.targetAudience.customAudience?.trim().length ?? 0) >= 10;
       case 3:
-        return formData.reasoning.trim().length >= 10;
+        return formData.reasoning.mainReasoning.trim().length >= 10;
       case 4:
-        return formData.expectedOutcome.trim().length >= 10;
+        return formData.expectedOutcome !== null && 
+               formData.expectedOutcome.metric.trim().length > 0 &&
+               formData.expectedOutcome.baseline > 0 &&
+               formData.expectedOutcome.expectedLift > 0;
       case 5:
         return formData.successMetrics.length > 0;
       default:

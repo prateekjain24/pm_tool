@@ -8,6 +8,32 @@ This document covers tickets 1-65, focusing on:
 - Phase 2: Authentication & Routing (15 tickets)
 - Phase 3: Hypothesis Builder UI (30 tickets)
 
+## Recent Updates (2025-07-28)
+
+### Completed Hypothesis Builder Steps 2-4 (38-40)
+- ✅ TICKET-038: Implement step 2 "Target audience" form
+  - Created StepTwo component with checkbox group for audience selection
+  - Added 8 preset audience options with tooltips explaining each
+  - Implemented "Other" option with conditional custom text input (200 char limit)
+  - Added dynamic audience size estimation showing traffic percentage
+  - Supports multiple selection with validation
+  - Integrated shadcn/ui checkbox and tooltip components
+- ✅ TICKET-039: Implement step 3 "Why will it work?" form
+  - Created StepThree component with rich text editor
+  - Integrated @uiw/react-md-editor for markdown support
+  - Added evidence/research link management (add/remove functionality)
+  - Implemented URL validation and preview mode toggle
+  - Character limit of 1000 with dynamic counter
+  - Includes 3 example reasoning templates (data-driven, psychology-based, competitive analysis)
+- ✅ TICKET-040: Implement step 4 "Expected impact" form
+  - Created StepFour component with metric selection and calculation
+  - Implemented dropdown with 10 common PM metrics
+  - Added baseline value input with dynamic unit display
+  - Created lift percentage calculator with visual feedback
+  - Added confidence level selector (Low/Medium/High) with descriptions
+  - Shows real-time projected improvement calculation
+  - Updated all type definitions to support new data structures
+
 ## Recent Updates (2025-07-22)
 
 ### Completed Hypothesis Builder Step 1 Form (37)
@@ -1005,38 +1031,61 @@ export interface Document {
   - Disabled Continue button when invalid
   - Data persistence across step navigation
 
-### TICKET-038: Implement step 2: "Target audience" form
+### TICKET-038: Implement step 2: "Target audience" form ✅ COMPLETED
 **Acceptance Criteria:**
-- Add preset options
-- Include custom input
-- Support multiple selection
-- Add audience size estimate
+- ✅ Add preset options
+- ✅ Include custom input
+- ✅ Support multiple selection
+- ✅ Add audience size estimate
 **Technical Details:**
-- Create checkbox group
-- Add "Other" option
-- Include tooltips
+- ✅ Create checkbox group
+- ✅ Add "Other" option
+- ✅ Include tooltips
+**Implementation Notes:**
+- Created StepTwo component with 8 preset audience options
+- Added "Other (specify)" option with conditional text field (200 char limit)
+- Implemented tooltips for each audience type explaining what they mean
+- Added dynamic audience size estimation showing traffic percentage
+- Supports multiple selection with validation requiring at least one selection
+- Includes best practices tips section for effective audience targeting
 
-### TICKET-039: Implement step 3: "Why will it work?" form
+### TICKET-039: Implement step 3: "Why will it work?" form ✅ COMPLETED
 **Acceptance Criteria:**
-- Create reasoning input
-- Add evidence fields
-- Include research links
-- Support rich text
+- ✅ Create reasoning input
+- ✅ Add evidence fields
+- ✅ Include research links
+- ✅ Support rich text
 **Technical Details:**
-- Use markdown editor
-- Add link validation
-- Include preview mode
+- ✅ Use markdown editor
+- ✅ Add link validation
+- ✅ Include preview mode
+**Implementation Notes:**
+- Integrated @uiw/react-md-editor for rich text editing
+- Created Reasoning type with mainReasoning and evidence array
+- Implemented dynamic evidence link management (add/remove)
+- Added URL validation for research links
+- Toggle between Edit and Preview modes
+- Character limit of 1000 with dynamic counter
+- Includes 3 example reasoning statements with click-to-use functionality
 
-### TICKET-040: Implement step 4: "Expected impact" form
+### TICKET-040: Implement step 4: "Expected impact" form ✅ COMPLETED
 **Acceptance Criteria:**
-- Add metric selection
-- Include lift calculator
-- Show baseline input
-- Add confidence selector
+- ✅ Add metric selection
+- ✅ Include lift calculator
+- ✅ Show baseline input
+- ✅ Add confidence selector
 **Technical Details:**
-- Create metric dropdown
-- Add percentage input
-- Include visual feedback
+- ✅ Create metric dropdown
+- ✅ Add percentage input
+- ✅ Include visual feedback
+**Implementation Notes:**
+- Created ExpectedOutcome type with metric, baseline, expectedLift, and confidence
+- Implemented metric dropdown with 10 common PM metrics
+- Added baseline value input with dynamic unit display
+- Created lift percentage calculator with visual feedback
+- Confidence selector with Low/Medium/High options and descriptions
+- Shows real-time calculation: current → expected value
+- Includes tips for realistic expectations by experiment type
 
 ### TICKET-041: Implement step 5: "Success metrics" form
 **Acceptance Criteria:**

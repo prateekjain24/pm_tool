@@ -45,6 +45,8 @@ bun run railway-build
 2. **Path Aliases**: Use `@client`, `@server`, `@shared` for clean imports
 3. **Build Order**: shared → server → client (automatic with `bun run build`)
 4. **Hot Reload**: All workspaces support hot module replacement in development
+5. **Form State Management**: Multi-step forms use controlled components with centralized state
+6. **Component Composition**: Step components are modular and type-safe with shared props interface
 
 ### API Structure
 Server runs on port 3000 by default. Current endpoints:
@@ -53,13 +55,42 @@ Server runs on port 3000 by default. Current endpoints:
 
 Client connects to `http://localhost:3000` in development.
 
-## Project Features (To Be Implemented)
+## Project Features
 
-1. **Hypothesis Builder**: AI-powered hypothesis creation with quality scoring
+### Implemented
+1. **Hypothesis Builder** (In Progress): Multi-step wizard for hypothesis creation
+   - ✅ Step 1: Intervention input with AI-powered examples
+   - ✅ Step 2: Target audience selection with size estimation
+   - ✅ Step 3: Reasoning with evidence collection
+   - ✅ Step 4: Expected outcome with metric configuration
+   - ✅ Step 5: Success metrics definition
+   - 🔄 AI quality scoring (pending)
+
+### To Be Implemented
 2. **Pre-Test Validator**: Automated experiment design validation
 3. **Sample Size Calculator**: Interactive statistical planning tools
 4. **Timeline Predictor**: Calendar-based experiment duration planning
 5. **Documentation Generator**: Auto-formatted PRDs and test plans
+
+## Current Implementation Status
+
+### Hypothesis Builder Components
+- **Main Component**: `client/src/components/hypothesis/HypothesisBuilder.tsx`
+- **Step Components**: Located in `client/src/components/hypothesis/steps/`
+  - StepOne: Intervention description with examples
+  - StepTwo: Target audience with checkboxes and custom input
+  - StepThree: Reasoning with evidence collection
+  - StepFour: Expected outcome configuration
+  - StepFive: Success metrics definition
+- **Progress Indicator**: Visual step tracker with navigation
+- **Types**: Defined in `client/src/types/hypothesis-builder.ts`
+- **UI Components**: checkbox, tooltip from shadcn/ui
+
+### Form Validation Patterns
+- Each step has its own validation logic
+- Continue button disabled until step requirements met
+- Real-time validation feedback
+- Character limits with visual counters
 
 ## Development Guidelines
 

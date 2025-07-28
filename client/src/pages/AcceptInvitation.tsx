@@ -44,6 +44,9 @@ export default function AcceptInvitation() {
 
   const verifyInvitation = async () => {
     try {
+      if (!token) {
+        throw new Error("No invitation token provided");
+      }
       const data = await api.getInvitationByToken(token);
       setInvitation(data as InvitationDetails);
     } catch (error) {

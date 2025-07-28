@@ -24,6 +24,11 @@
             "date": 1753135753837,
             "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-22.log",
             "hash": "ae9b461bc7518aea2b1bc649ddb2f887344bcf8e7ad383357de2dd7293c83519"
+        },
+        {
+            "date": 1753704750076,
+            "name": "/Users/prateek/Documents/Claude/tools/bhvr/pm-tools/logs/mcp-puppeteer-2025-07-28.log",
+            "hash": "dd667cb8504515fcdcb847201099593f1ccf719ecda8a38182b1e79593d7af5a"
         }
     ],
     "hashType": "sha256"
